@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 try {
-  mongoose.connect("mongodb+srv://logyana:logyana@clustero.sf2nu.mongodb.net/clustero?retryWrites=true&w=majority", {
+  mongoose.connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
