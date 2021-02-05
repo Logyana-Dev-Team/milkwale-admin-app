@@ -1,5 +1,5 @@
 const { toTitleCase } = require("../config/function");
-const categoryModel = require("../models/categories");
+const categoryModel = require("../models/categories.model");
 const fs = require("fs");
 
 class Category {

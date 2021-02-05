@@ -1,6 +1,6 @@
 const { toTitleCase, validateEmail } = require("../config/function");
 const bcrypt = require("bcryptjs");
-const userModel = require("../models/users");
+const userModel = require("../models/users.model");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config/keys");
 

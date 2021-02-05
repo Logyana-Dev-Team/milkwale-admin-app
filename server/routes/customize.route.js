@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const customizeController = require("../controller/customize");
+const customizeController = require("../controller/customize.controller");
 const multer = require("multer");
 
 var storage = multer.diskStorage({

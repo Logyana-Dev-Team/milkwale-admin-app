@@ -1,9 +1,9 @@
 const fs = require("fs");
-const categoryModel = require("../models/categories");
-const productModel = require("../models/products");
-const orderModel = require("../models/orders");
-const userModel = require("../models/users");
-const customizeModel = require("../models/customize");
+const categoryModel = require("../models/categories.model");
+const productModel = require("../models/products.model");
+const orderModel = require("../models/orders.model");
+const userModel = require("../models/users.model");
+const customizeModel = require("../models/customize.model");
 
 class Customize {
   async getImages(req, res) {

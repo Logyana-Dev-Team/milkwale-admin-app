@@ -24,13 +24,13 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 // Import Router
-const authRouter = require("./routes/auth");
-const categoryRouter = require("./routes/categories");
-const productRouter = require("./routes/products");
-const brainTreeRouter = require("./routes/braintree");
-const orderRouter = require("./routes/orders");
-const usersRouter = require("./routes/users");
-const customizeRouter = require("./routes/customize");
+const authRouter = require("./routes/auth.route");
+const categoryRouter = require("./routes/categories.route");
+const productRouter = require("./routes/products.route");
+const brainTreeRouter = require("./routes/braintree.route");
+const orderRouter = require("./routes/orders.route");
+const usersRouter = require("./routes/users.route");
+const customizeRouter = require("./routes/customize.route");
 
 // Import Auth middleware for check user login or not~
 const { loginCheck } = require("./middleware/auth");

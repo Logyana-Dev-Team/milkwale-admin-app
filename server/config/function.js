@@ -1,5 +1,5 @@
 /* This all of are helper function */
-const userModel = require("../models/users");
+const userModel = require("../models/users.model");
 
 exports.toTitleCase = function (str) {
   return str.replace(/\w\S*/g, function (txt) {
