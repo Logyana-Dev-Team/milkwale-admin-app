@@ -8,9 +8,9 @@ const AdminSidebar = (props) => {
   return (
     <Fragment>
       <div
-        style={{ boxShadow: "1px 1px 8px 0.2px #aaaaaa" }}
+        style={{ boxShadow: "1px 1px 8px 0.2px #aaaaaa",position:"fixed",zIndex:999,marginTop:'6%' }}
         id="sidebar"
-        className="hidden md:block sticky top-0 left-0 h-screen md:w-3/12 lg:w-2/12 sidebarShadow bg-white text-gray-600"
+        className="hidden md:block sticky top-0 left-0 h-screen md:w-2/12 lg:w-1/12 sidebarShadow bg-white"
       >
         <div
           onClick={(e) => history.push("/admin/dashboard")}
@@ -18,11 +18,11 @@ const AdminSidebar = (props) => {
             location.pathname === "/admin/dashboard"
               ? "border-r-4 border-gray-800 bg-gray-100"
               : ""
-          } hover:bg-gray-200 cursor-pointer flex flex-col items-center justify-center py-6`}
+          } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
         >
           <span>
             <svg
-              className="w-8 h-8 text-gray-600 hover:text-gray-800"
+              className="w-8 h-8 text-gray-600 hover:text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -36,7 +36,7 @@ const AdminSidebar = (props) => {
               />
             </svg>
           </span>
-          <span className="hover:text-gray-800">Dashboard</span>
+          <span className="hover:text-white">Dashboard</span>
         </div>
         <hr className="border-b border-gray-200" />
         <div
@@ -45,11 +45,11 @@ const AdminSidebar = (props) => {
             location.pathname === "/admin/dashboard/categories"
               ? "border-r-4 border-gray-800 bg-gray-100"
               : ""
-          } hover:bg-gray-200 cursor-pointer flex flex-col items-center justify-center py-6`}
+          } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
         >
           <span>
             <svg
-              className="w-8 h-8 text-gray-600 hover:text-gray-800"
+              className="w-8 h-8 text-gray-600 hover:text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -63,20 +63,20 @@ const AdminSidebar = (props) => {
               />
             </svg>
           </span>
-          <span className="hover:text-gray-800">Categories</span>
+          <span className="hover:text-white">Categories</span>
         </div>
         <hr className="border-b border-gray-200" />
         <div
           onClick={(e) => history.push("/admin/dashboard/products")}
           className={`${
             location.pathname === "/admin/dashboard/products"
-              ? "border-r-4 border-gray-800 bg-gray-100"
+              ? "border-r-4 border-white bg-gray-100"
               : ""
-          } hover:bg-gray-200 cursor-pointer flex flex-col items-center justify-center py-6`}
+          } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
         >
           <span>
             <svg
-              className="w-8 h-8 text-gray-600 hover:text-gray-800"
+              className="w-8 h-8 text-gray-600 hover:text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -90,20 +90,20 @@ const AdminSidebar = (props) => {
               />
             </svg>
           </span>
-          <span className="hover:text-gray-800">Product</span>
+          <span className="hover:text-white">Product</span>
         </div>
         <hr className="border-b border-gray-200" />
         <div
           onClick={(e) => history.push("/admin/dashboard/orders")}
           className={`${
             location.pathname === "/admin/dashboard/orders"
-              ? "border-r-4 border-gray-800 bg-gray-100"
+              ? "border-r-4 border-white bg-gray-100"
               : ""
-          } hover:bg-gray-200 cursor-pointer flex flex-col items-center justify-center py-6`}
+          } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
         >
           <span>
             <svg
-              className="w-8 h-8 text-gray-600 hover:text-gray-800"
+              className="w-8 h-8 text-gray-600 hover:text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -117,19 +117,20 @@ const AdminSidebar = (props) => {
               />
             </svg>
           </span>
-          <span className="hover:text-gray-800">Order</span>
+          <span className="hover:text-white">Order</span>
         </div> 
+        <hr className="border-b border-gray-200" />
          <div
           onClick={(e) => history.push("/admin/dashboard/subscriptions")}
           className={`${
             location.pathname === "/admin/dashboard/subscriptions"
-              ? "border-r-4 border-gray-800 bg-gray-100"
+              ? "border-r-4 border-white bg-gray-100"
               : ""
-          } hover:bg-gray-200 cursor-pointer flex flex-col items-center justify-center py-6`}
+          } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
         >
           <span>
             <svg
-              className="w-8 h-8 text-gray-600 hover:text-gray-800"
+              className="w-8 h-8 text-gray-600 hover:text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -143,9 +144,35 @@ const AdminSidebar = (props) => {
               />
             </svg>
           </span>
-          <span className="hover:text-gray-800">Subscriptions</span>
+          <span className="hover:text-white">Subscriptions</span>
         </div>
         <hr className="border-b border-gray-200" />
+        <div
+          onClick={(e) => history.push("/admin/dashboard/customers")}
+          className={`${
+            location.pathname === "/admin/dashboard/customers"
+              ? "border-r-4 border-white bg-gray-100"
+              : ""
+          } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
+        >
+          <span>
+            <svg
+              className="w-8 h-8 text-gray-600 hover:text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+              />
+            </svg>
+          </span>
+          <span className="hover:text-white">Customers</span>
+        </div>
       </div>
     </Fragment>
   );

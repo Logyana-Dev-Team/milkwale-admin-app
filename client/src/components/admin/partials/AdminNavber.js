@@ -13,7 +13,7 @@ const AdminNavber = (props) => {
 
   return (
     <Fragment>
-      <nav className="sticky z-10 flex items-center shadow-md justify-between px-4 py-4 md:px-8 top-0 w-full bg-white">
+      <nav className="sticky z-10 flex items-center shadow-md justify-between px-4 py-4 md:px-8 top-0 w-full bg-green-400">
         {/*  Large Screen Show  */}
         <div className="hidden lg:block lg:flex lg:items-center lg:space-x-4 mr-32">
           <span>
@@ -38,7 +38,7 @@ const AdminNavber = (props) => {
           <span
             onClick={(e) => history.push("/admin/dashboard")}
             style={{ letterSpacing: "0.70rem" }}
-            className="flex items-left text-center font-bold uppercase text-gray-800 
+            className="flex items-left text-center font-bold uppercase text-white
             text-2xl cursor-pointer px-2 text-center"
           >
             Milkwale
@@ -109,7 +109,7 @@ const AdminNavber = (props) => {
             title="Logout"
           >
             <svg
-              className="cursor-pointer w-8 h-8 text-gray-600 hover:text-gray-800"
+              className="cursor-pointer w-8 h-8 text-white hover:text-gray-800"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -146,7 +146,7 @@ const AdminNavber = (props) => {
                   </span>
                   <span>Shop</span>
                 </span> */}
-                <span className="flex space-x-1 py-2 px-8 hover:bg-gray-400 cursor-pointer">
+                <span className="flex space-x-1 py-2 px-8 hover:bg-gray-600 hover:text-white cursor-pointer">
                   <span>
                     <svg
                       className="w-6 h-6"
@@ -173,7 +173,7 @@ const AdminNavber = (props) => {
                 </span>
                 <span
                   onClick={(e) => logout()}
-                  className="flex space-x-1 py-2 px-8 hover:bg-gray-400 cursor-pointer"
+                  className="flex space-x-1 py-2 px-8 hover:bg-gray-600 hover:text-white cursor-pointer"
                 >
                   <span>
                     <svg
