@@ -4,10 +4,10 @@ export const fetchData = async (dispatch) => {
   dispatch({ type: "loading", payload: true });
   let responseData = await getAllSubscription();
   setTimeout(() => {
-    if (responseData && responseData.Subscriptions) {
+    if (responseData && responseData.Subscription) {
       dispatch({
         type: "fetchSubscriptionAndChangeState",
-        payload: responseData.Subscriptions,
+        payload: responseData.Subscription,
       });
       dispatch({ type: "loading", payload: false });
     }
@@ -39,38 +39,38 @@ export const filterSubscription = async (
   setDropdown
 ) => {
   let responseData = await getAllSubscription();
-  if (responseData && responseData.Subscriptions) {
+  if (responseData && responseData.Subscription) {
     let newData;
     if (type === "All") {
       dispatch({
         type: "fetchSubscriptionAndChangeState",
-        payload: responseData.Subscriptions,
+        payload: responseData.Subscription,
       });
       setDropdown(!dropdown);
     } else if (type === "Not processed") {
-      newData = responseData.Subscriptions.filter(
+      newData = responseData.Subscription.filter(
         (item) => item.status === "Not processed"
       );
       dispatch({ type: "fetchSubscriptionAndChangeState", payload: newData });
       setDropdown(!dropdown);
     } else if (type === "Processing") {
-      newData = responseData.Subscriptions.filter(
+      newData = responseData.Subscription.filter(
         (item) => item.status === "Processing"
       );
       dispatch({ type: "fetchSubscriptionAndChangeState", payload: newData });
       setDropdown(!dropdown);
     } else if (type === "Shipped") {
-      newData = responseData.Subscriptions.filter((item) => item.status === "Shipped");
+      newData = responseData.Subscription.filter((item) => item.status === "Shipped");
       dispatch({ type: "fetchSubscriptionAndChangeState", payload: newData });
       setDropdown(!dropdown);
     } else if (type === "Delivered") {
-      newData = responseData.Subscriptions.filter(
+      newData = responseData.Subscription.filter(
         (item) => item.status === "Delivered"
       );
       dispatch({ type: "fetchSubscriptionAndChangeState", payload: newData });
       setDropdown(!dropdown);
     } else if (type === "Cancelled") {
-      newData = responseData.Subscriptions.filter(
+      newData = responseData.Subscription.filter(
         (item) => item.status === "Cancelled"
       );
       dispatch({ type: "fetchSubscriptionAndChangeState", payload: newData });

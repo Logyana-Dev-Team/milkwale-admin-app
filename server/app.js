@@ -29,6 +29,7 @@ const categoryRouter = require("./routes/categories.route");
 const productRouter = require("./routes/products.route");
 const brainTreeRouter = require("./routes/braintree.route");
 const orderRouter = require("./routes/orders.route");
+const subscriptionRouter = require("./routes/subscription.route");
 const usersRouter = require("./routes/users.route");
 const customizeRouter = require("./routes/customize.route");
 
@@ -64,6 +65,7 @@ app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
 app.use("/api", brainTreeRouter);
 app.use("/api/order", orderRouter);
+app.use("/api/subscription", subscriptionRouter);
 app.use("/api/customize", customizeRouter);
 
 // Run Server

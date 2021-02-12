@@ -135,7 +135,7 @@ const CategoryTable = ({ order, editOrder }) => {
             </span>
           )}
         </td>
-        <td className="hover:bg-gray-200 p-2 text-center">
+        {/* <td className="hover:bg-gray-200 p-2 text-center">
           ${order.amount}.00
         </td>
         <td className="hover:bg-gray-200 p-2 text-center">
@@ -144,7 +144,7 @@ const CategoryTable = ({ order, editOrder }) => {
         <td className="hover:bg-gray-200 p-2 text-center">{order.user.name}</td>
         <td className="hover:bg-gray-200 p-2 text-center">
           {order.user.email}
-        </td>
+        </td> */}
         <td className="hover:bg-gray-200 p-2 text-center">{order.phone}</td>
         <td className="hover:bg-gray-200 p-2 text-center">{order.address}</td>
         <td className="hover:bg-gray-200 p-2 text-center">

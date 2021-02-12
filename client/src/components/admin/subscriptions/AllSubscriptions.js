@@ -94,7 +94,7 @@ const CategoryTable = ({ subscription, editSubscription }) => {
     <Fragment>
       <tr className="border-b">
         <td className="w-48 hover:bg-gray-200 p-2 flex flex-col space-y-1">
-          {subscription.allProduct.map((product, i) => {
+          {/* {subscription.allProduct.map((product, i) => {
             return (
               <span className="block flex items-center space-x-2" key={i}>
                 <img
@@ -106,7 +106,7 @@ const CategoryTable = ({ subscription, editSubscription }) => {
                 <span>{product.quantitiy}x</span>
               </span>
             );
-          })}
+          })} */}
         </td>
         <td className="hover:bg-gray-200 p-2 text-center cursor-default">
           {subscription.status === "Not processed" && (
@@ -135,7 +135,7 @@ const CategoryTable = ({ subscription, editSubscription }) => {
             </span>
           )}
         </td>
-        <td className="hover:bg-gray-200 p-2 text-center">
+        {/* <td className="hover:bg-gray-200 p-2 text-center">
           ${subscription.amount}.00
         </td>
         <td className="hover:bg-gray-200 p-2 text-center">
@@ -144,7 +144,7 @@ const CategoryTable = ({ subscription, editSubscription }) => {
         <td className="hover:bg-gray-200 p-2 text-center">{subscription.user.name}</td>
         <td className="hover:bg-gray-200 p-2 text-center">
           {subscription.user.email}
-        </td>
+        </td> */}
         <td className="hover:bg-gray-200 p-2 text-center">{subscription.phone}</td>
         <td className="hover:bg-gray-200 p-2 text-center">{subscription.address}</td>
         <td className="hover:bg-gray-200 p-2 text-center">
