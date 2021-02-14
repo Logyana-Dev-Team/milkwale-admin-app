@@ -10,7 +10,7 @@ import {
   ProductByCategory,
   CheckoutPage,
 } from "./shop";
-import { DashboardAdmin, Categories, Products, Orders,Subscriptions } from "./admin";
+import { DashboardAdmin, Categories, Products, Orders,Subscriptions,Subpacks } from "./admin";
 import { UserProfile, UserOrders, SettingUser } from "./shop/dashboardUser";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -51,6 +51,11 @@ const Routes = (props) => {
           exact={true}
           path="/admin/dashboard/products"
           component={Products}
+        />
+        <AdminProtectedRoute
+          exact={true}
+          path="/admin/dashboard/subpacks"
+          component={Subpacks}
         />
         <AdminProtectedRoute
           exact={true}
