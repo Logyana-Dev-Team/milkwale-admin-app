@@ -2,12 +2,14 @@ import React, { Fragment, useContext, useState, useEffect } from "react";
 import { SubpackContext } from "./index";
 import { editSubpack, getAllSubpack } from "./FetchApi";
 import { getAllCategory } from "../categories/FetchApi";
+import { productByCategory } from "../products/FetchApi";
 const apiURL = process.env.REACT_APP_API_URL;
 
 const EditSubpackModal = (props) => {
   const { data, dispatch } = useContext(SubpackContext);
 
   const [categories, setCategories] = useState(null);
+  const [products, setProducts] = useState({});
 
   const alert = (msg, type) => (
     <div className={`bg-${type}-200 py-2 px-4 w-full`}>{msg}</div>
@@ -16,14 +18,15 @@ const EditSubpackModal = (props) => {
   const [editformData, setEditformdata] = useState({
     pId: "",
     pName: "",
-    pDescription: "",
-    pImages: null,
-    pEditImages: null,
-    pStatus: "",
+    // pDescription: "",
+    // pImages: null,
+    // pEditImages: null,
+    // pStatus: "",
     pCategory: "",
-    pQuantity: "",
-    pPrice: "",
-    pOffer: "",
+    pProduct: "",
+    pCredits: 0,
+    // pPrice: "",
+    pOffer: 0,
     error: false,
     success: false,
   });
@@ -39,16 +42,24 @@ const EditSubpackModal = (props) => {
     }
   };
 
+  const fetchProductData = async (catId) => {
+
+    let responseData = await productByCategory(catId);
+    if (responseData.Products) {
+      setProducts(responseData.Products);
+    }
+  }
   useEffect(() => {
     setEditformdata({
       pId: data.editSubpackModal.pId,
       pName: data.editSubpackModal.pName,
-      pDescription: data.editSubpackModal.pDescription,
-      pImages: data.editSubpackModal.pImages,
-      pStatus: data.editSubpackModal.pStatus,
+      // pDescription: data.editSubpackModal.pDescription,
+      // pImages: data.editSubpackModal.pImages,
+      // pStatus: data.editSubpackModal.pStatus,
+      pProduct: data.editSubpackModal.pProduct,
       pCategory: data.editSubpackModal.pCategory,
-      pQuantity: data.editSubpackModal.pQuantity,
-      pPrice: data.editSubpackModal.pPrice,
+      pCredits: data.editSubpackModal.pCredits,
+      // pPrice: data.editSubpackModal.pPrice,
       pOffer: data.editSubpackModal.pOffer,
     });
   }, [data.editSubpackModal]);
@@ -65,11 +76,11 @@ const EditSubpackModal = (props) => {
 
   const submitForm = async (e) => {
     e.preventDefault();
-    if (!editformData.pEditImages) {
-      console.log("Image Not upload=============", editformData);
-    } else {
-      console.log("Image uploading");
-    }
+    // if (!editformData.pEditImages) {
+    //   console.log("Image Not upload=============", editformData);
+    // } else {
+    //   console.log("Image uploading");
+    // }
     try {
       let responseData = await editSubpack(editformData);
       if (responseData.success) {
@@ -163,7 +174,7 @@ const EditSubpackModal = (props) => {
                   type="text"
                 />
               </div>
-              <div className="w-1/2 flex flex-col space-y-1 space-x-1">
+              {/* <div className="w-1/2 flex flex-col space-y-1 space-x-1">
                 <label htmlFor="price">Subpack Price *</label>
                 <input
                   value={editformData.pPrice}
@@ -179,9 +190,9 @@ const EditSubpackModal = (props) => {
                   className="px-4 py-2 border focus:outline-none"
                   id="price"
                 />
-              </div>
+              </div> */}
             </div>
-            <div className="flex flex-col space-y-2">
+            {/* <div className="flex flex-col space-y-2">
               <label htmlFor="description">Subpack Description *</label>
               <textarea
                 value={editformData.pDescription}
@@ -199,9 +210,9 @@ const EditSubpackModal = (props) => {
                 cols={5}
                 rows={2}
               />
-            </div>
+            </div> */}
             {/* Most Important part for uploading multiple image */}
-            <div className="flex flex-col mt-4">
+            {/* <div className="flex flex-col mt-4">
               <label htmlFor="image">Subpack Images *</label>
               {editformData.pImages ? (
                 <div className="flex space-x-1">
@@ -235,10 +246,10 @@ const EditSubpackModal = (props) => {
                 id="image"
                 multiple
               />
-            </div>
+            </div> */}
             {/* Most Important part for uploading multiple image */}
             <div className="flex space-x-1 py-4">
-              <div className="w-1/2 flex flex-col space-y-1">
+              {/* <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="status">Subpack Status *</label>
                 <select
                   value={editformData.pStatus}
@@ -261,18 +272,18 @@ const EditSubpackModal = (props) => {
                     Disabled
                   </option>
                 </select>
-              </div>
+              </div> */}
               <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="status">Subpack Category *</label>
                 <select
-                  onChange={(e) =>
+                  onChange={(e) =>{
                     setEditformdata({
                       ...editformData,
                       error: false,
                       success: false,
                       pCategory: e.target.value,
                     })
-                  }
+                    fetchProductData(editformData.pCategory)}}
                   name="status"
                   className="px-4 py-2 border focus:outline-none"
                   id="status"
@@ -309,18 +320,69 @@ const EditSubpackModal = (props) => {
                     : ""}
                 </select>
               </div>
-            </div>
-            <div className="flex space-x-1 py-4">
               <div className="w-1/2 flex flex-col space-y-1">
-                <label htmlFor="quantity">Subpack in Stock *</label>
-                <input
-                  value={editformData.pQuantity}
+                <label htmlFor="status">Subpack Product *</label>
+                <select
                   onChange={(e) =>
                     setEditformdata({
                       ...editformData,
                       error: false,
                       success: false,
-                      pQuantity: e.target.value,
+                      pProduct: e.target.value,
+                    })
+                  }
+                  name="status"
+                  className="px-4 py-2 border focus:outline-none"
+                  id="status"
+                >
+                  <option disabled value="">
+                    Select a Product
+                  </option>
+                  {products && products.length > 0
+                    ? products.map((elem) => {
+                        return (
+                          <Fragment key={elem._id}>
+                            {editformData.pProduct._id &&
+                            editformData.pProduct._id === elem._id ? (
+                              <option
+                                name="status"
+                                value={elem._id}
+                                key={elem._id}
+                                selected
+                              >
+                                {elem.pName}
+                              </option>
+                            ) : (
+                              <option
+                                name="status"
+                                value={elem._id}
+                                key={elem._id}
+                              >
+                                {elem.pName}
+                              </option>
+                            )}
+                          </Fragment>
+                        );
+                      })
+                    : ""}
+                </select>
+              </div>
+            </div>
+              
+           
+
+
+            <div className="flex space-x-1 py-4">
+              <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="quantity">Subpack Credits *</label>
+                <input
+                  value={editformData.pCredits}
+                  onChange={(e) =>
+                    setEditformdata({
+                      ...editformData,
+                      error: false,
+                      success: false,
+                      pCredits: e.target.value,
                     })
                   }
                   type="number"
@@ -329,7 +391,7 @@ const EditSubpackModal = (props) => {
                 />
               </div>
               <div className="w-1/2 flex flex-col space-y-1">
-                <label htmlFor="offer">Subpack Offfer (%) *</label>
+                <label htmlFor="offer">Subpack Offer (%) *</label>
                 <input
                   value={editformData.pOffer}
                   onChange={(e) =>

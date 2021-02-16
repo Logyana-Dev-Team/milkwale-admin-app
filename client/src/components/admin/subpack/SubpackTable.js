@@ -78,9 +78,9 @@ const AllSubpack = (props) => {
           <thead>
             <tr>
               <th className="px-4 py-2 border">Subpack</th>
-              <th className="px-4 py-2 border">Price</th>
+              {/* <th className="px-4 py-2 border">Price</th> */}
               {/* <th className="px-4 py-2 border">Description</th> */}
-              <th className="px-4 py-2 border">Image</th>
+              {/* <th className="px-4 py-2 border">Image</th> */}
               <th className="px-4 py-2 border">Product Name</th>
               <th className="px-4 py-2 border">Credits</th>
               <th className="px-4 py-2 border">Category</th>
@@ -133,20 +133,20 @@ const SubpackTable = ({ subpack, deleteSubpack, editSubpack }) => {
           {/* {subpack.pName.length > 15
             ? subpack.pDescription.substring(1, 15) + "..."
             : subpack.pName} */}
-            {subpack.pName}
+            {subpack.pName} 
         </td>
         <td className="p-2 text-left">
-         Rs. {subpack.pPrice}
+         Rs. Product name
         </td>
-        <td className="p-2 text-center">
+        {/* <td className="p-2 text-center">
           <img
             className="w-12 h-12 object-cover object-center"
             src={`${apiURL}/uploads/subpacks/${subpack.pImages[0]}`}
             alt="pic"
           />
-        </td>
-        <td className="p-2 text-center">
-          {/* {subpack.pStatus === "Active" ? (
+        </td> */}
+        {/* <td className="p-2 text-center">
+          {subpack.pStatus === "Active" ? (
             <span className="bg-green-200 rounded-full text-center text-xs px-2 font-semibold">
               {subpack.pStatus}
             </span>
@@ -154,9 +154,9 @@ const SubpackTable = ({ subpack, deleteSubpack, editSubpack }) => {
             <span className="bg-red-200 rounded-full text-center text-xs px-2 font-semibold">
               {subpack.pStatus}
             </span>
-          )} */}
+          )}
           {subpack.pName}
-        </td>
+        </td> */}
         <td className="p-2 text-center">{subpack.pCredits}</td>
         <td className="p-2 text-center">{subpack.pCategory.cName}</td>
         <td className="p-2 text-center">{subpack.pOffer}</td>

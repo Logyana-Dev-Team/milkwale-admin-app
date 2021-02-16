@@ -19,31 +19,30 @@ export const createSubpackImage = async ({ pImage }) => {
   /* Most important part for uploading multiple image  */
 };
 
-export const createSubpack = async ({
-  pName,
-  pProduct,
-  pImage,
-  pCategory,
-  pCredits,
-  pPrice,
-  pOffer,
-}) => {
+export const createSubpack = async (subpack) => {
   /* Most important part for uploading multiple image  */
-  let formData = new FormData();
-  for (const file of pImage) {
-    formData.append("pImage", file);
+  // let formData = new FormData();
+  // // for (const file of pImage) {
+  // //   formData.append("pImage", file);
+  // // }
+  // /* Most important part for uploading multiple image  */
+  // formData.append("pName", pName);
+  // formData.append("pProduct", pProduct);
+  // // formData.append("pStatus", pStatus);
+  // formData.append("pCategory", pCategory);
+  // formData.append("pCredits", pCredits);
+  // // formData.append("pPrice", pPrice);
+  // formData.append("pOffer", pOffer);
+  const Data={
+    pId:subpack.pId,
+    pName:subpack.pName,
+    pProduct:subpack.pProduct,
+    pCategory:subpack.pCategory,
+    pCredits:subpack.pCredits,
+    pOffer:subpack.pOffer
   }
-  /* Most important part for uploading multiple image  */
-  formData.append("pName", pName);
-  formData.append("pProduct", pProduct);
-  // formData.append("pStatus", pStatus);
-  formData.append("pCategory", pCategory);
-  formData.append("pCredits", pCredits);
-  formData.append("pPrice", pPrice);
-  formData.append("pOffer", pOffer);
-
   try {
-    let res = await axios.post(`${apiURL}/api/subpack/add-subpack`, formData);
+    let res = await axios.post(`${apiURL}/api/subpack/add-subpack`, Data);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -51,27 +50,36 @@ export const createSubpack = async ({
 };
 
 export const editSubpack = async (subpack) => {
-  console.log(subpack);
+  // console.log(subpack);
   /* Most important part for updating multiple image  */
-  let formData = new FormData();
-  if (subpack.pEditImages) {
-    for (const file of subpack.pEditImages) {
-      formData.append("pEditImages", file);
-    }
-  }
-  /* Most important part for updating multiple image  */
-  formData.append("pId", subpack.pId);
-  formData.append("pName", subpack.pName);
-  formData.append("pProduct", subpack.pProduct);
-  // formData.append("pStatus", subpack.pStatus);
-  formData.append("pCategory", subpack.pCategory._id);
-  formData.append("pCredits", subpack.pCredits);
-  formData.append("pPrice", subpack.pPrice);
-  formData.append("pOffer", subpack.pOffer);
-  formData.append("pImages", subpack.pImages);
+  // let formData = new FormData();
+  // // if (subpack.pEditImages) {
+  // //   for (const file of subpack.pEditImages) {
+  // //     formData.append("pEditImages", file);
+  // //   }
+  // // }
+  // /* Most important part for updating multiple image  */
+  // formData.append("pId", subpack.pId);
+  // formData.append("pName", subpack.pName);
+  // formData.append("pProduct", subpack.pProduct._id);
+  // // formData.append("pStatus", subpack.pStatus);
+  // formData.append("pCategory", subpack.pCategory._id);
+  // formData.append("pCredits", subpack.pCredits);
+  // // formData.append("pPrice", subpack.pPrice);
+  // formData.append("pOffer", subpack.pOffer);
+  // // formData.append("pImages", subpack.pImages);
 
+
+  const Data={
+    pId:subpack.pId,
+    pName:subpack.pName,
+    pProduct:subpack.pProduct,
+    pCategory:subpack.pCategory,
+    pCredits:subpack.pCredits,
+    pOffer:subpack.pOffer
+  }
   try {
-    let res = await axios.post(`${apiURL}/api/subpack/edit-subpack`, formData);
+    let res = await axios.post(`${apiURL}/api/subpack/edit-subpack`, Data);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -98,13 +106,13 @@ export const subpackByCategory = async (catId) => {
   }
 };
 
-export const subpackByPrice = async (price) => {
-  try {
-    let res = await axios.post(`${apiURL}/api/subpack/subpack-by-price`, {
-      price,
-    });
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
+// export const subpackByPrice = async (price) => {
+//   try {
+//     let res = await axios.post(`${apiURL}/api/subpack/subpack-by-price`, {
+//       price,
+//     });
+//     return res.data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };

@@ -16,12 +16,12 @@ const upload = multer({ storage: storage });
 
 router.get("/all-subpack", subpackController.getAllSubpack);
 router.post("/subpack-by-category", subpackController.getSubpackByCategory);
-router.post("/subpack-by-price", subpackController.getSubpackByPrice);
+// router.post("/subpack-by-price", subpackController.getSubpackByPrice);
 // router.post("/wish-product", subpackController.getWishProduct);
 // router.post("/cart-product", subpackController.getCartProduct);
 
-router.post("/add-subpack", upload.any(), subpackController.postAddSubpack);
-router.post("/edit-subpack", upload.any(), subpackController.postEditSubpack);
+router.post("/add-subpack",  subpackController.postAddSubpack);
+router.post("/edit-subpack",  subpackController.postEditSubpack);
 router.post("/delete-subpack", subpackController.getDeleteSubpack);
 router.post("/single-subpack", subpackController.getSingleSubpack);
 

@@ -11,10 +11,10 @@ const subpackSchema = new mongoose.Schema(
     //   type: String,
     //   required: true,
     // },
-    pPrice: {
-      type: Number,
-      required: true,
-    },
+    // pPrice: {
+    //   type: Number,
+    //   required: true,
+    // },
     pSold: {
       type: Number,
       default: 0,
@@ -31,25 +31,25 @@ const subpackSchema = new mongoose.Schema(
         type: ObjectId,
         ref: "products",
       },
-    pImages: {
-      type: Array,
-      required: true,
-    },
+    // pImages: {
+    //   type: Array,
+    //   required: true,
+    // },
     pOffer: {
       type: Number,
       default: 0,
     },
-    pRatingsReviews: [
-      {
-        review: String,
-        user: { type: ObjectId, ref: "users" },
-        rating: String,
-        createdAt: {
-          type: Date,
-          default: Date.now(),
-        },
-      },
-    ],
+    // pRatingsReviews: [
+    //   {
+    //     review: String,
+    //     user: { type: ObjectId, ref: "users" },
+    //     rating: String,
+    //     createdAt: {
+    //       type: Date,
+    //       default: Date.now(),
+    //     },
+    //   },
+    // ],
     // pStatus: {
     //   type: String,
     //   required: true,

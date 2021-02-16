@@ -18,9 +18,9 @@ const AddSubpackDetail = ({ categories,products }) => {
     pName: "",
     // pDescription: "",
     pProduct: "",
-    pImage: null, // Initial value will be null or empty array
+    // pImage: null, // Initial value will be null or empty array
     pCategory: "",
-    pPrice: "",
+    // pPrice: "",
     pOffer: 0,
     pCredits: 0,
     success: false,
@@ -74,10 +74,10 @@ const AddSubpackDetail = ({ categories,products }) => {
           ...fData,
           pName: "",
           // pDescription: "-",
-          pImage: "",
+          // pImage: "",
           pProduct: "",
           pCategory: "",
-          pPrice: "",
+          // pPrice: "",
           pCredits: 0,
           pOffer: 0,
           success: responseData.success,
@@ -88,10 +88,10 @@ const AddSubpackDetail = ({ categories,products }) => {
             ...fData,
             pName: "",
             // pDescription: "-",
-            pImage: "",
+            // pImage: "",
             pProduct: "",
             pCategory: "",
-            pPrice: "",
+            // pPrice: "",
             pCredits: 0,
             pOffer: 0,
             success: false,
@@ -175,7 +175,7 @@ const AddSubpackDetail = ({ categories,products }) => {
                   type="text"
                 />
               </div>
-              <div className="w-1/2 flex flex-col space-y-1 space-x-1">
+              {/* <div className="w-1/2 flex flex-col space-y-1 space-x-1">
                 <label htmlFor="price">Subpack Price *</label>
                 <input
                   value={fData.pPrice}
@@ -191,7 +191,7 @@ const AddSubpackDetail = ({ categories,products }) => {
                   className="px-4 py-2 border focus:outline-none"
                   id="price"
                 />
-              </div>
+              </div> */}
             </div>
             {/* <div className="flex flex-col space-y-2">
               <label htmlFor="description">Subpack Description *</label>
@@ -213,7 +213,7 @@ const AddSubpackDetail = ({ categories,products }) => {
               />
             </div> */}
             {/* Most Important part for uploading multiple image */}
-            <div className="flex flex-col mt-4">
+            {/* <div className="flex flex-col mt-4">
               <label htmlFor="image">Subpack Images *</label>
               <span className="text-gray-600 text-xs">Must need 2 images</span>
               <input
@@ -231,7 +231,7 @@ const AddSubpackDetail = ({ categories,products }) => {
                 id="image"
                 multiple
               />
-            </div>
+            </div> */}
             {/* Most Important part for uploading multiple image */}
             <div className="flex space-x-1 py-4">
               {/* <div className="w-1/2 flex flex-col space-y-1">
