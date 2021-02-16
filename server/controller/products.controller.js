@@ -5,11 +5,12 @@ const path = require("path");
 class Product {
   // Delete Image from uploads -> products folder
   static deleteImages(images, mode) {
-    var basePath = path.resolve(__dirname + '../../') + '/public/uploads/products/';
+    var basePath =
+      path.resolve(__dirname + "../../") + "/public/uploads/products/";
     console.log(basePath);
     for (var i = 0; i < images.length; i++) {
-      let filePath = ''
-      if (mode == 'file') {
+      let filePath = "";
+      if (mode == "file") {
         filePath = basePath + `${images[i].filename}`;
       } else {
         filePath = basePath + `${images[i]}`;
@@ -17,7 +18,7 @@ class Product {
       console.log(filePath);
       if (fs.existsSync(filePath)) {
         console.log("Exists image");
-    }
+      }
       fs.unlink(filePath, (err) => {
         if (err) {
           return err;
@@ -61,19 +62,19 @@ class Product {
       !pOffer |
       !pStatus
     ) {
-      Product.deleteImages(images, 'file');
+      Product.deleteImages(images, "file");
       return res.json({ error: "All filled must be required" });
     }
     // Validate Name and description
     else if (pName.length > 255 || pDescription.length > 3000) {
-      Product.deleteImages(images, 'file');
+      Product.deleteImages(images, "file");
       return res.json({
         error: "Name 255 & Description must not be 3000 charecter long",
       });
     }
     // Validate Images
     else if (images.length !== 2) {
-      Product.deleteImages(images, 'file');
+      Product.deleteImages(images, "file");
       return res.json({ error: "Must need to provide 2 images" });
     } else {
       try {
@@ -133,10 +134,10 @@ class Product {
       return res.json({
         error: "Name 255 & Description must not be 3000 charecter long",
       });
-    } 
+    }
     // Validate Update Images
     else if (editImages && editImages.length == 1) {
-      Product.deleteImages(editImages, 'file');
+      Product.deleteImages(editImages, "file");
       return res.json({ error: "Must need to provide 2 images" });
     } else {
       let editData = {
@@ -147,14 +148,14 @@ class Product {
         pCategory,
         pOffer,
         pStatus,
-      }
+      };
       if (editImages.length == 2) {
         let allEditImages = [];
         for (const img of editImages) {
           allEditImages.push(img.filename);
         }
-        editData = {...editData, pImages: allEditImages};
-        Product.deleteImages(pImages.split(','), 'string');
+        editData = { ...editData, pImages: allEditImages };
+        Product.deleteImages(pImages.split(","), "string");
       }
       try {
         let editProduct = productModel.findByIdAndUpdate(pId, editData);
@@ -178,7 +179,7 @@ class Product {
         let deleteProduct = await productModel.findByIdAndDelete(pId);
         if (deleteProduct) {
           // Delete Image from uploads -> products folder
-          Product.deleteImages(deleteProductObj.pImages, 'string');
+          Product.deleteImages(deleteProductObj.pImages, "string");
           return res.json({ success: "Product deleted successfully" });
         }
       } catch (err) {
@@ -351,7 +352,63 @@ class Product {
       }
     }
   }
+
+  async postEditProductbySubpack(req, res) {
+    let { pName, pOffer, pCredits, pProduct } = req.body;
+    // console.log(req.body);
+
+    let pId = pProduct;
+    let data = {
+      name: pName,
+      offer: pOffer,
+      credits: pCredits,
+    };
+    try {
+      productModel.findByIdAndUpdate(
+        { _id: pId },
+        {
+          $addToSet: {
+            pSubpacks: data,
+          },
+        },
+        { upsert: true },
+        (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            res.json({ success: "Product edit successfully" });
+          }
+        }
+      );
+      // console.log(editProduct);
+      // editProduct.exec((err) => {
+      //   if (err) console.log(err);
+      //   return res.json({ success: "Product edit successfully" });
+      // });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
+
+// async getDeleteSubpack(req, res) {
+//   let { pId } = req.body;
+//   if (!pId) {
+//     return res.json({ error: "All filled must be required" });
+//   } else {
+//     try {
+//       let deleteProductObj = await productModel.findById(pId);
+//       let deleteProduct = await productModel.findByIdAndDelete(pId);
+//       if (deleteProduct) {
+//         // Delete Image from uploads -> products folder
+//         Product.deleteImages(deleteProductObj.pImages, 'string');
+//         return res.json({ success: "Product deleted successfully" });
+//       }
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   }
+// }
 
 const productController = new Product();
 module.exports = productController;

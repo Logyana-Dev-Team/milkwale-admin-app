@@ -36,8 +36,8 @@ const subpackSchema = new mongoose.Schema(
       required: true,
     },
     pOffer: {
-      type: String,
-      default: null,
+      type: Number,
+      default: 0,
     },
     pRatingsReviews: [
       {

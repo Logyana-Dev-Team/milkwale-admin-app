@@ -2,10 +2,13 @@ import React, { Fragment, useContext, useState, useEffect } from "react";
 import { SubpackContext } from "./index";
 import { createSubpack, getAllSubpack } from "./FetchApi";
 import { getAllCategory } from "../categories/FetchApi";
-import { getAllProduct } from "../products/FetchApi";
+import { editProductbySubpack, productByCategory } from "../products/FetchApi";
 
 const AddSubpackDetail = ({ categories,products }) => {
   const { data, dispatch } = useContext(SubpackContext);
+  const [catId, setCatId] = useState('')
+  const [allPro, setAllPro] = useState({});
+
 
   const alert = (msg, type) => (
     <div className={`bg-${type}-200 py-2 px-4 w-full`}>{msg}</div>
@@ -19,7 +22,7 @@ const AddSubpackDetail = ({ categories,products }) => {
     pCategory: "",
     pPrice: "",
     pOffer: 0,
-    pCredits: "",
+    pCredits: 0,
     success: false,
     error: false,
   });
@@ -35,6 +38,17 @@ const AddSubpackDetail = ({ categories,products }) => {
       }
     }, 1000);
   };
+// fetch product list by category
+  const fetchProductData = async (catId) => {
+
+    let responseData = await productByCategory(catId);
+    if (responseData.Products) {
+      setAllPro(responseData.Products);
+    }
+    // console.log(allPro);
+
+  };
+// fetch product list by category
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -48,7 +62,12 @@ const AddSubpackDetail = ({ categories,products }) => {
     }
 
     try {
+      // console.log(fData);
       let responseData = await createSubpack(fData);
+      // console.log(responseData);
+      let updatedData = await editProductbySubpack(responseData.data);
+      // console.log(updatedData);
+      
       if (responseData.success) {
         fetchData(); //take a look not done yet
         setFdata({
@@ -59,7 +78,7 @@ const AddSubpackDetail = ({ categories,products }) => {
           pProduct: "",
           pCategory: "",
           pPrice: "",
-          pCredits: "",
+          pCredits: 0,
           pOffer: 0,
           success: responseData.success,
           error: false,
@@ -73,7 +92,7 @@ const AddSubpackDetail = ({ categories,products }) => {
             pProduct: "",
             pCategory: "",
             pPrice: "",
-            pCredits: "",
+            pCredits: 0,
             pOffer: 0,
             success: false,
             error: false,
@@ -243,13 +262,14 @@ const AddSubpackDetail = ({ categories,products }) => {
                 <label htmlFor="category">Subpack Category *</label>
                 <select
                   value={fData.pCategory}
-                  onChange={(e) =>
+                  onChange={(e) =>{
                     setFdata({
                       ...fData,
                       error: false,
                       success: false,
                       pCategory: e.target.value,
                     })
+                    fetchProductData(e.target.value);}
                   }
                   name="category"
                   className="px-4 py-2 border focus:outline-none"
@@ -288,11 +308,11 @@ const AddSubpackDetail = ({ categories,products }) => {
                   <option disabled value="">
                     Select a product
                   </option>
-                  {products.length > 0
-                    ? products.map(function (elem) {
+                  {allPro.length > 0
+                    ? allPro.map(function (elem) {
                         return (
                           <option name="product" value={elem._id} key={elem._id}>
-                            {elem.cName}
+                            {elem.pName}
                           </option>
                         );
                       })
@@ -355,28 +375,22 @@ const AddSubpackDetail = ({ categories,products }) => {
 const AddSubpackModal = (props) => {
   useEffect(() => {
     fetchCategoryData();
-    fetchProductData();
   }, []);
 
   const [allCat, setAllCat] = useState({});
-  const [allPro, setAllPro] = useState({});
 
   const fetchCategoryData = async () => {
     let responseData = await getAllCategory();
     if (responseData.Categories) {
       setAllCat(responseData.Categories);
     }
-  };
-  const fetchProductData = async () => {
-    let responseData = await getAllProduct();
-    if (responseData.Products) {
-      setAllPro(responseData.Products);
-    }
-  };
+    // console.log(allCat);
 
+  };
+ 
   return (
     <Fragment>
-      <AddSubpackDetail categories={allCat} products={allPro}/>
+      <AddSubpackDetail categories={allCat}/>
     </Fragment>
   );
 };

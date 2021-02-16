@@ -18,6 +18,7 @@ const AllSubpack = (props) => {
   const fetchData = async () => {
     setLoading(true);
     let responseData = await getAllSubpack();
+    console.log(responseData);
     setTimeout(() => {
       if (responseData && responseData.Subpacks) {
         dispatch({
@@ -145,7 +146,7 @@ const SubpackTable = ({ subpack, deleteSubpack, editSubpack }) => {
           />
         </td>
         <td className="p-2 text-center">
-          {subpack.pStatus === "Active" ? (
+          {/* {subpack.pStatus === "Active" ? (
             <span className="bg-green-200 rounded-full text-center text-xs px-2 font-semibold">
               {subpack.pStatus}
             </span>
@@ -153,7 +154,8 @@ const SubpackTable = ({ subpack, deleteSubpack, editSubpack }) => {
             <span className="bg-red-200 rounded-full text-center text-xs px-2 font-semibold">
               {subpack.pStatus}
             </span>
-          )}
+          )} */}
+          {subpack.pName}
         </td>
         <td className="p-2 text-center">{subpack.pCredits}</td>
         <td className="p-2 text-center">{subpack.pCategory.cName}</td>

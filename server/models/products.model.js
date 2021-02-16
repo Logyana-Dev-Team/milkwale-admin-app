@@ -35,11 +35,11 @@ const productSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    pRatingsReviews: [
+    pSubpacks: [
       {
-        review: String,
-        user: { type: ObjectId, ref: "users" },
-        rating: String,
+        name:String,
+        credits:Number,
+        offer:Number,
         createdAt: {
           type: Date,
           default: Date.now(),

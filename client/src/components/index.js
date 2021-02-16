@@ -21,7 +21,7 @@ const Routes = (props) => {
     <Router>
       <Switch>
         {/* Shop & Public Routes */}
-        <Route exact path="/" component={Home} />
+        {/* <Route exact path="/" component={Home} />
         <Route exact path="/wish-list" component={WishList} />
         <Route exact path="/products/:id" component={ProductDetails} />
         <Route
@@ -33,7 +33,7 @@ const Routes = (props) => {
           exact={true}
           path="/checkout"
           component={CheckoutPage}
-        />
+        /> */}
         {/* Shop & Public Routes End */}
 
         {/* Admin Routes */}

@@ -91,7 +91,7 @@ class Subpack {
         });
         let save = await newSubpack.save();
         if (save) {
-          return res.json({ success: "Subpack created successfully" });
+          return res.json({ data:save,success: "Subpack created successfully" });
         }
       } catch (err) {
         console.log(err);
