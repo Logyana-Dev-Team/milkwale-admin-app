@@ -31,7 +31,8 @@ class Subpack {
       let Subpacks = await subpackModel
         .find({})
         .populate("pCategory", "_id cName")
-        .sort({ _id: -1 });
+        .populate("pProduct", "_id pName")
+        .sort({ updatedAt : -1 });
       if (Subpacks) {
         return res.json({ Subpacks });
       }

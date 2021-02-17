@@ -5,7 +5,7 @@ const fs = require("fs");
 class Category {
   async getAllCategory(req, res) {
     try {
-      let Categories = await categoryModel.find({}).sort({ _id: -1 });
+      let Categories = await categoryModel.find({}).sort({ updatedAt : -1 });
       if (Categories) {
         return res.json({ Categories });
       }

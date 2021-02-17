@@ -35,6 +35,12 @@ const productSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    pVariant: [
+      {
+        unit:String,
+        value:Number,
+      },
+    ],
     pSubpacks: [
       {
         name:String,

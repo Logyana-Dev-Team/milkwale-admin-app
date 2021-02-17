@@ -8,7 +8,7 @@ class User {
         .find({})
         .populate("allProduct.id", "pName pImages pPrice")
         .populate("user", "name email")
-        .sort({ _id: -1 });
+        .sort({ updatedAt : -1 });
       if (Users) {
         return res.json({ Users });
       }

@@ -7,7 +7,7 @@ class Subscription {
         .find({})
         .populate("subscriptionProduct.id", "pName pImages pPrice")
         .populate("user", "name phone userImage")
-        .sort({ _id: -1 });
+        .sort({ updatedAt : -1 });
       if (Subscription) {
         return res.json({ Subscription });
       }

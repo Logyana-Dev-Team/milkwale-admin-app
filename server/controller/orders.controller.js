@@ -7,7 +7,7 @@ class Order {
         .find({})
         .populate("allProduct.id", "pName pImages pPrice")
         .populate("user", "name email")
-        .sort({ _id: -1 });
+        .sort({ updatedAt: -1 });
       if (Orders) {
         return res.json({ Orders });
       }
@@ -37,7 +37,7 @@ class Order {
   }
 
   async postCreateOrder(req, res) {
-    let { allProduct, user, amount, transactionId, address, phone } = req.body;
+    let { allProduct, user, amount, transactionId, address, phone,status} = req.body;
     if (
       !allProduct ||
       !user ||
@@ -56,12 +56,13 @@ class Order {
           transactionId,
           address,
           phone,
+          status
         });
         let save = await newOrder.save();
         if (save) {
           return res.json({ success: "Order created successfully" });
         }
-      } catch (err) {
+      } catch (error) {
         return res.json({ error: error });
       }
     }

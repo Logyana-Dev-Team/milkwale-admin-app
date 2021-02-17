@@ -32,7 +32,7 @@ class Product {
       let Products = await productModel
         .find({})
         .populate("pCategory", "_id cName")
-        .sort({ _id: -1 });
+        .sort({ updatedAt: -1 });
       if (Products) {
         return res.json({ Products });
       }
@@ -50,6 +50,7 @@ class Product {
       pCategory,
       pOffer,
       pStatus,
+      pVariant,
     } = req.body;
     let images = req.files;
     // Validation
@@ -60,7 +61,8 @@ class Product {
       !pQuantity |
       !pCategory |
       !pOffer |
-      !pStatus
+      !pStatus |
+      !pVariant
     ) {
       Product.deleteImages(images, "file");
       return res.json({ error: "All filled must be required" });
@@ -91,6 +93,7 @@ class Product {
           pCategory,
           pOffer,
           pStatus,
+          pVariant,
         });
         let save = await newProduct.save();
         if (save) {
@@ -113,6 +116,7 @@ class Product {
       pOffer,
       pStatus,
       pImages,
+      pVariant,
     } = req.body;
     let editImages = req.files;
 
@@ -125,7 +129,8 @@ class Product {
       !pQuantity |
       !pCategory |
       !pOffer |
-      !pStatus
+      !pStatus |
+      !pVariant
     ) {
       return res.json({ error: "All filled must be required" });
     }
@@ -148,6 +153,7 @@ class Product {
         pCategory,
         pOffer,
         pStatus,
+        pVariant,
       };
       if (editImages.length == 2) {
         let allEditImages = [];
