@@ -28,6 +28,7 @@ const authRouter = require("./routes/auth.route");
 const categoryRouter = require("./routes/categories.route");
 const productRouter = require("./routes/products.route");
 const subpackRouter = require("./routes/subpacks.route");
+const delboyRouter = require("./routes/delboy.route");
 const brainTreeRouter = require("./routes/braintree.route");
 const orderRouter = require("./routes/orders.route");
 const subscriptionRouter = require("./routes/subscription.route");
@@ -68,6 +69,7 @@ app.use("/api/subpack", subpackRouter);
 app.use("/api", brainTreeRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/subscription", subscriptionRouter);
+app.use("/api/delboy", delboyRouter);
 app.use("/api/customize", customizeRouter);
 
 // Run Server
