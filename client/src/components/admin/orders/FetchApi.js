@@ -4,6 +4,7 @@ const apiURL = process.env.REACT_APP_API_URL;
 export const getAllOrder = async () => {
   try {
     let res = await axios.get(`${apiURL}/api/order/get-all-orders`);
+    console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error);

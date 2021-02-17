@@ -283,7 +283,7 @@ const EditSubpackModal = (props) => {
                       success: false,
                       pCategory: e.target.value,
                     })
-                    fetchProductData(editformData.pCategory)}}
+                    fetchProductData(e.target.value)}}
                   name="status"
                   className="px-4 py-2 border focus:outline-none"
                   id="status"

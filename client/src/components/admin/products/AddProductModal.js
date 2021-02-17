@@ -5,9 +5,9 @@ import { getAllCategory } from "../categories/FetchApi";
 
 const AddProductDetail = ({ categories }) => {
   const { data, dispatch } = useContext(ProductContext);
-
+  
   const alert = (msg, type) => (
-    <div className={`bg-${type}-200 py-2 px-4 w-full`}>{msg}</div>
+    <div className={`bg-${type}-200 py-1 px-4 w-full`}>{msg}</div>
   );
 
   const [fData, setFdata] = useState({
@@ -19,6 +19,7 @@ const AddProductDetail = ({ categories }) => {
     pPrice: "",
     pOffer: 0,
     pQuantity: "",
+    pVariant: [],
     success: false,
     error: false,
   });
@@ -60,6 +61,7 @@ const AddProductDetail = ({ categories }) => {
           pPrice: "",
           pQuantity: "",
           pOffer: 0,
+          pVariant: [],
           success: responseData.success,
           error: false,
         });
@@ -74,6 +76,7 @@ const AddProductDetail = ({ categories }) => {
             pPrice: "",
             pQuantity: "",
             pOffer: 0,
+            pVariant: [],
             success: false,
             error: false,
           });
@@ -138,7 +141,38 @@ const AddProductDetail = ({ categories }) => {
           {fData.error ? alert(fData.error, "red") : ""}
           {fData.success ? alert(fData.success, "green") : ""}
           <form className="w-full" onSubmit={(e) => submitForm(e)}>
-            <div className="flex space-x-1 py-4">
+            <div className="flex space-x-1 py-2">
+              <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="status">Product Category *</label>
+                <select
+                  value={fData.pCategory}
+                  onChange={(e) =>
+                    setFdata({
+                      ...fData,
+                      error: false,
+                      success: false,
+                      pCategory: e.target.value,
+                    })
+                  }
+                  name="status"
+                  className="px-4 py-1 border focus:outline-none"
+                  id="status"
+                >
+                  <option disabled value="">
+                    Select a category
+                  </option>
+                  {categories.length > 0
+                    ? categories.map(function (elem) {
+                        return (
+                          <option name="status" value={elem._id} key={elem._id}>
+                            {elem.cName}
+                          </option>
+                        );
+                      })
+                    : ""}
+                </select>
+              </div>
+
               <div className="w-1/2 flex flex-col space-y-1 space-x-1">
                 <label htmlFor="name">Product Name *</label>
                 <input
@@ -151,25 +185,8 @@ const AddProductDetail = ({ categories }) => {
                       pName: e.target.value,
                     })
                   }
-                  className="px-4 py-2 border focus:outline-none"
+                  className="px-4 py-1 border focus:outline-none"
                   type="text"
-                />
-              </div>
-              <div className="w-1/2 flex flex-col space-y-1 space-x-1">
-                <label htmlFor="price">Product Price *</label>
-                <input
-                  value={fData.pPrice}
-                  onChange={(e) =>
-                    setFdata({
-                      ...fData,
-                      error: false,
-                      success: false,
-                      pPrice: e.target.value,
-                    })
-                  }
-                  type="number"
-                  className="px-4 py-2 border focus:outline-none"
-                  id="price"
                 />
               </div>
             </div>
@@ -185,7 +202,7 @@ const AddProductDetail = ({ categories }) => {
                     pDescription: e.target.value,
                   })
                 }
-                className="px-4 py-2 border focus:outline-none"
+                className="px-4 py-1 border focus:outline-none"
                 name="description"
                 id="description"
                 cols={5}
@@ -207,7 +224,7 @@ const AddProductDetail = ({ categories }) => {
                 }
                 type="file"
                 accept=".jpg, .jpeg, .png"
-                className="px-4 py-2 border focus:outline-none"
+                className="px-4 py-1 border focus:outline-none"
                 id="image"
                 multiple
               />
@@ -227,7 +244,7 @@ const AddProductDetail = ({ categories }) => {
                     })
                   }
                   name="status"
-                  className="px-4 py-2 border focus:outline-none"
+                  className="px-4 py-1 border focus:outline-none"
                   id="status"
                 >
                   <option name="status" value="Active">
@@ -238,37 +255,85 @@ const AddProductDetail = ({ categories }) => {
                   </option>
                 </select>
               </div>
-              <div className="w-1/2 flex flex-col space-y-1">
-                <label htmlFor="status">Product Category *</label>
-                <select
-                  value={fData.pCategory}
+
+              <div className="w-1/2 flex flex-col space-y-1 space-x-1">
+                <label htmlFor="price">Product Price *</label>
+                <input
+                  value={fData.pPrice}
                   onChange={(e) =>
                     setFdata({
                       ...fData,
                       error: false,
                       success: false,
-                      pCategory: e.target.value,
+                      pPrice: e.target.value,
                     })
                   }
-                  name="status"
-                  className="px-4 py-2 border focus:outline-none"
-                  id="status"
-                >
-                  <option disabled value="">
-                    Select a category
-                  </option>
-                  {categories.length > 0
-                    ? categories.map(function (elem) {
-                        return (
-                          <option name="status" value={elem._id} key={elem._id}>
-                            {elem.cName}
-                          </option>
-                        );
-                      })
-                    : ""}
-                </select>
+                  type="number"
+                  className="px-4 py-1 border focus:outline-none"
+                  id="price"
+                />
               </div>
             </div>
+
+            {/* <div className="flex space-x-1 py-1"> */}
+
+            <div className="w-100 flex flex-col space-y-1 space-x-1">
+              <label htmlFor="variantval">Select Variant*</label>
+              <div className="w-100 flex flex-row space-x-1">
+                <input
+                  value={fData.pVariant.value}
+                  onChange={(e) => {
+                    setFdata({
+                      ...fData,
+                      error: false,
+                      success: false,
+                      pVariant: { value: e.target.value },
+                    });
+                  }}
+                  type="number"
+                  className="px-2 py-1 border focus:outline-none w-1/4"
+                  id="variantvalue"
+                />
+                <select
+                  value={fData.pVariant.unit}
+                  onChange={(e) => {
+                    setFdata({
+                      ...fData,
+                      error: false,
+                      success: false,
+                      pVariant: { unit: e.target.value },
+                    });
+                  
+                  }}
+                  name="variantunit"
+                  className="px-2 py-1 border focus:outline-none"
+                  id="variantunit"
+                >
+                  <option name="status" value="Ltr.">
+                    Ltr.
+                  </option>
+                  <option name="status" value="ml">
+                    ml
+                  </option>
+                  <option name="status" value="Kg">
+                    Kg
+                  </option>
+                  <option name="status" value="gm">
+                    gm
+                  </option>
+                  <option name="status" value="units">
+                    units
+                  </option>
+                </select>
+              </div>
+           
+            </div>
+            {/* <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="status">Select variant unit *</label>
+              
+              </div> */}
+
+            {/* </div> */}
             <div className="flex space-x-1 py-4">
               <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="quantity">Product in Stock *</label>
@@ -283,12 +348,12 @@ const AddProductDetail = ({ categories }) => {
                     })
                   }
                   type="number"
-                  className="px-4 py-2 border focus:outline-none"
+                  className="px-4 py-1 border focus:outline-none"
                   id="quantity"
                 />
               </div>
               <div className="w-1/2 flex flex-col space-y-1">
-                <label htmlFor="offer">Product Offfer (%) *</label>
+                <label htmlFor="offer">Product Offer (%) *</label>
                 <input
                   value={fData.pOffer}
                   onChange={(e) =>
@@ -300,7 +365,7 @@ const AddProductDetail = ({ categories }) => {
                     })
                   }
                   type="number"
-                  className="px-4 py-2 border focus:outline-none"
+                  className="px-4 py-1 border focus:outline-none"
                   id="offer"
                 />
               </div>
@@ -309,7 +374,7 @@ const AddProductDetail = ({ categories }) => {
               <button
                 style={{ background: "#303031" }}
                 type="submit"
-                className="rounded-full bg-gray-800 text-gray-100 text-lg font-medium py-2"
+                className="rounded-full bg-gray-800 text-gray-100 text-lg font-medium py-1"
               >
                 Create product
               </button>

@@ -81,10 +81,12 @@ const AllSubpack = (props) => {
               {/* <th className="px-4 py-2 border">Price</th> */}
               {/* <th className="px-4 py-2 border">Description</th> */}
               {/* <th className="px-4 py-2 border">Image</th> */}
-              <th className="px-4 py-2 border">Product Name</th>
-              <th className="px-4 py-2 border">Credits</th>
               <th className="px-4 py-2 border">Category</th>
-              <th className="px-4 py-2 border">Offer</th>
+              <th className="px-4 py-2 border">Product Name</th>
+          
+
+              <th className="px-4 py-2 border">Credits</th>
+              <th className="px-4 py-2 border">Offer(in %)</th>
               <th className="px-4 py-2 border">Created at</th>
               <th className="px-4 py-2 border">Updated at</th>
               <th className="px-4 py-2 border">Actions</th>
@@ -129,15 +131,13 @@ const SubpackTable = ({ subpack, deleteSubpack, editSubpack }) => {
   return (
     <Fragment>
       <tr>
-        <td className="p-2 text-left">
+        <td className="p-2 text-center">
           {/* {subpack.pName.length > 15
             ? subpack.pDescription.substring(1, 15) + "..."
             : subpack.pName} */}
             {subpack.pName} 
         </td>
-        <td className="p-2 text-left">
-         Rs. Product name
-        </td>
+      
         {/* <td className="p-2 text-center">
           <img
             className="w-12 h-12 object-cover object-center"
@@ -157,9 +157,10 @@ const SubpackTable = ({ subpack, deleteSubpack, editSubpack }) => {
           )}
           {subpack.pName}
         </td> */}
-        <td className="p-2 text-center">{subpack.pCredits}</td>
         <td className="p-2 text-center">{subpack.pCategory.cName}</td>
-        <td className="p-2 text-center">{subpack.pOffer}</td>
+        <td className="p-2 text-center">{subpack.pProduct.pName}</td>
+        <td className="p-2 text-center">{subpack.pCredits}</td>
+        <td className="p-2 text-center">{subpack.pOffer}%</td>
         <td className="p-2 text-center">
           {moment(subpack.createdAt).format("lll")}
         </td>

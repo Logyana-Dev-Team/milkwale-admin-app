@@ -40,13 +40,14 @@ const AllCategory = (props) => {
         <table className="table-auto border w-full my-2">
           <thead>
             <tr>
-              <th className="px-4 py-2 border">Products</th>
-              <th className="px-4 py-2 border">Status</th>
-              <th className="px-4 py-2 border">Total</th>
-              <th className="px-4 py-2 border">Transaction Id</th>
+              <th className="px-4 py-2 border">OrderId</th>
               <th className="px-4 py-2 border">Customer</th>
-              <th className="px-4 py-2 border">Email</th>
-              <th className="px-4 py-2 border">Phone</th>
+
+              <th className="px-4 py-2 border">Status</th>
+              {/* <th className="px-4 py-2 border">Total</th> */}
+              {/* <th className="px-4 py-2 border">Transaction Id</th> */}
+              {/* <th className="px-4 py-2 border">Email</th> */}
+              {/* <th className="px-4 py-2 border">Delivery Date</th> */}
               <th className="px-4 py-2 border">Address</th>
               <th className="px-4 py-2 border">Created at</th>
               <th className="px-4 py-2 border">Updated at</th>
@@ -79,7 +80,7 @@ const AllCategory = (props) => {
           </tbody>
         </table>
         <div className="text-sm text-gray-600 mt-2">
-          Total {orders && orders.length} order found
+          Total {orders && orders.length } order found
         </div>
       </div>
     </Fragment>
@@ -89,6 +90,7 @@ const AllCategory = (props) => {
 /* Single Category Component */
 const CategoryTable = ({ order, editOrder }) => {
   const { dispatch } = useContext(OrderContext);
+  
 
   return (
     <Fragment>
@@ -103,11 +105,13 @@ const CategoryTable = ({ order, editOrder }) => {
                   alt="productImage"
                 />
                 <span>{product.id.pName}</span>
-                <span>{product.quantitiy}x</span>
+                <span>x {product.quantitiy}</span>
               </span>
             );
           })}
         </td>
+        <td className="hover:bg-gray-200 p-2 text-center">{order.user.name}</td>
+
         <td className="hover:bg-gray-200 p-2 text-center cursor-default">
           {order.status === "Not processed" && (
             <span className="block text-red-600 rounded-full text-center text-xs px-2 font-semibold">
@@ -145,7 +149,7 @@ const CategoryTable = ({ order, editOrder }) => {
         <td className="hover:bg-gray-200 p-2 text-center">
           {order.user.email}
         </td> */}
-        <td className="hover:bg-gray-200 p-2 text-center">{order.phone}</td>
+        {/* <td className="hover:bg-gray-200 p-2 text-center">{order.status}</td> */}
         <td className="hover:bg-gray-200 p-2 text-center">{order.address}</td>
         <td className="hover:bg-gray-200 p-2 text-center">
           {moment(order.createdAt).format("lll")}

@@ -40,16 +40,21 @@ const AllCategory = (props) => {
         <table className="table-auto border w-full my-2">
           <thead>
             <tr>
-              <th className="px-4 py-2 border">Products</th>
-              <th className="px-4 py-2 border">Status</th>
-              <th className="px-4 py-2 border">Total</th>
-              <th className="px-4 py-2 border">Transaction Id</th>
+              {/* <th className="px-4 py-2 border">Products</th> */}
+              <th className="px-4 py-2 border">Subscription Id</th>
               <th className="px-4 py-2 border">Customer</th>
-              <th className="px-4 py-2 border">Email</th>
-              <th className="px-4 py-2 border">Phone</th>
+
+              <th className="px-4 py-2 border">Status</th>
+
               <th className="px-4 py-2 border">Address</th>
-              <th className="px-4 py-2 border">Created at</th>
-              <th className="px-4 py-2 border">Updated at</th>
+              {/* <th className="px-4 py-2 border">Transaction Id</th> */}
+              {/* <th className="px-4 py-2 border">Email</th>
+              <th className="px-4 py-2 border">Phone</th>
+              <th className="px-4 py-2 border">Address</th> */}
+              <th className="px-4 py-2 border">Morning Time</th>
+              <th className="px-4 py-2 border">Evening Time</th>
+              {/* <th className="px-4 py-2 border">Created at</th>
+              <th className="px-4 py-2 border">Updated at</th> */}
               <th className="px-4 py-2 border">Actions</th>
             </tr>
           </thead>
@@ -93,8 +98,8 @@ const CategoryTable = ({ subscription, editSubscription }) => {
   return (
     <Fragment>
       <tr className="border-b">
-        <td className="w-48 hover:bg-gray-200 p-2 flex flex-col space-y-1">
-          {/* {subscription.allProduct.map((product, i) => {
+        {/* <td className="w-48 hover:bg-gray-200 p-2 flex flex-col space-y-1">
+          {subscription.allProduct.map((product, i) => {
             return (
               <span className="block flex items-center space-x-2" key={i}>
                 <img
@@ -106,8 +111,10 @@ const CategoryTable = ({ subscription, editSubscription }) => {
                 <span>{product.quantitiy}x</span>
               </span>
             );
-          })} */}
-        </td>
+          })} 
+        </td>*/}
+        <td className="hover:bg-gray-200 p-2 text-center">ID{subscription._id.slice(-5).toUpperCase()}</td>
+
         <td className="hover:bg-gray-200 p-2 text-center cursor-default">
           {subscription.status === "Not processed" && (
             <span className="block text-red-600 rounded-full text-center text-xs px-2 font-semibold">
@@ -147,6 +154,8 @@ const CategoryTable = ({ subscription, editSubscription }) => {
         </td> */}
         <td className="hover:bg-gray-200 p-2 text-center">{subscription.phone}</td>
         <td className="hover:bg-gray-200 p-2 text-center">{subscription.address}</td>
+        <td className="hover:bg-gray-200 p-2 text-center">{subscription.morningTime}</td>
+        <td className="hover:bg-gray-200 p-2 text-center">{subscription.eveningTime}</td>
         <td className="hover:bg-gray-200 p-2 text-center">
           {moment(subscription.createdAt).format("lll")}
         </td>
