@@ -108,7 +108,7 @@ console.log(  pId,
         let editSubpack = subpackModel.findByIdAndUpdate(pId, editData);
         editSubpack.exec((err) => {
           if (err) console.log(err);
-          return res.json({ success: "Subpack edit successfully" });
+          return res.json({ data:editData,success: "Subpack edit successfully" });
         });
       } catch (err) {
         console.log(err);

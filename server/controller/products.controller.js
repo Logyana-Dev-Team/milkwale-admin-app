@@ -52,6 +52,10 @@ class Product {
       pStatus,
       pVariant,
     } = req.body;
+    console.log(pVariant);
+    // let newVar= JSON.parse(pVariant)
+    // console.log(parsedVariant);
+    console.log("working");
     let images = req.files;
     // Validation
     if (
@@ -61,8 +65,7 @@ class Product {
       !pQuantity |
       !pCategory |
       !pOffer |
-      !pStatus |
-      !pVariant
+      !pStatus 
     ) {
       Product.deleteImages(images, "file");
       return res.json({ error: "All filled must be required" });
@@ -84,6 +87,17 @@ class Product {
         for (const img of images) {
           allImages.push(img.filename);
         }
+
+        let i=0;
+        let allVariants=[];
+for( i=0;i<pVariant.length; i++){
+  allVariants.push(JSON.parse(pVariant[i]))
+}
+console.log(allVariants);
+        // for (const item of pVariant) {
+        //   allVariants.push(JSON.parse(item));
+        // }
+
         let newProduct = new productModel({
           pImages: allImages,
           pName,
@@ -93,11 +107,11 @@ class Product {
           pCategory,
           pOffer,
           pStatus,
-          pVariant,
+          pVariant:allVariants
         });
         let save = await newProduct.save();
         if (save) {
-          return res.json({ success: "Product created successfully" });
+          return res.json({ data:save,success: "Product created successfully" });
         }
       } catch (err) {
         console.log(err);
@@ -395,6 +409,45 @@ class Product {
       console.log(err);
     }
   }
+
+  
+  async postEditProductbyVariant(req, res) {
+    let {  _id,pVariant } = req.body;
+    console.log(req.body);
+
+    let pId = _id;
+    // let data = {
+    //   value: pVariant.value,
+    //   unit: pVariant.unit
+    // };
+    try {
+      productModel.findByIdAndUpdate(
+        { _id : pId },
+        {
+          $addToSet: {
+            pVariant: pVariant,
+          },
+        },
+        { upsert: true },
+        (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            res.json({ success: "Product edit successfully" });
+            console.log("EDiting");
+          }
+        }
+      );
+      // console.log(editProduct);
+      // editProduct.exec((err) => {
+      //   if (err) console.log(err);
+      //   return res.json({ success: "Product edit successfully" });
+      // });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
 }
 
 // async getDeleteSubpack(req, res) {

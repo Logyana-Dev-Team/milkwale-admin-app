@@ -23,6 +23,7 @@ router.post("/cart-product", productController.getCartProduct);
 router.post("/add-product", upload.any(), productController.postAddProduct);
 router.post("/edit-product", upload.any(), productController.postEditProduct);
 router.post("/edit-product-by-subpack", upload.any(), productController.postEditProductbySubpack);
+router.post("/edit-product-by-variant", productController.postEditProductbyVariant);
 router.post("/delete-product", productController.getDeleteProduct);
 router.post("/single-product", productController.getSingleProduct);
 

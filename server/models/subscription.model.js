@@ -40,7 +40,7 @@ const subscriptionSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    quantitiy: {
+    quantity: {
       type: String,
       required: true,
     },

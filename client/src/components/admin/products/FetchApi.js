@@ -28,7 +28,9 @@ export const createProduct = async ({
   pQuantity,
   pPrice,
   pOffer,
+  pVariant
 }) => {
+  
   /* Most important part for uploading multiple image  */
   let formData = new FormData();
   for (const file of pImage) {
@@ -42,6 +44,17 @@ export const createProduct = async ({
   formData.append("pQuantity", pQuantity);
   formData.append("pPrice", pPrice);
   formData.append("pOffer", pOffer);
+
+  // for (const item of pVariant) {
+  //   formData.append("pVariant", JSON.stringify(item));
+  // }
+  let i=0;
+  // let allVariants=[];
+for( i=0;i<pVariant.length; i++){
+    formData.append("pVariant", JSON.stringify(pVariant[i]));
+
+}
+  // formData.append("pVariant", pVariant);
 
   try {
     let res = await axios.post(`${apiURL}/api/product/add-product`, formData);
@@ -70,6 +83,7 @@ export const editProduct = async (product) => {
   formData.append("pPrice", product.pPrice);
   formData.append("pOffer", product.pOffer);
   formData.append("pImages", product.pImages);
+  formData.append("pVariant", product.pVariant);
 
   try {
     let res = await axios.post(`${apiURL}/api/product/edit-product`, formData);
@@ -136,4 +150,15 @@ export const editProductbySubpack = async (product) => {
   } catch (error) {
     console.log(error);
   }
+}
+  export const editProductbyVariant = async (product) => {
+    console.log(product);
+ 
+    try {
+      let res = await axios.post(`${apiURL}/api/product/edit-product-by-variant`, product);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  
 };

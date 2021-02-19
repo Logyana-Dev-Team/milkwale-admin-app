@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
 
+const dataObj = new mongoose.Schema({
+  unit: { type: String, required: true },
+  value: { type: Number, required: true },
+});
+
 const productSchema = new mongoose.Schema(
   {
     pName: {
@@ -35,17 +40,14 @@ const productSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    pVariant: [
-      {
-        unit:String,
-        value:Number,
-      },
-    ],
+    pVariant: {
+      type:Array
+    },
     pSubpacks: [
       {
-        name:String,
-        credits:Number,
-        offer:Number,
+        name: String,
+        credits: Number,
+        offer: Number,
         createdAt: {
           type: Date,
           default: Date.now(),

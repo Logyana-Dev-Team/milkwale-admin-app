@@ -44,14 +44,15 @@ class Subscription {
     } else {
       try {
         let newSubscription = new subscriptionModel({
+          subscriptionProduct: req.body.subscriptionProduct,
           credits: req.body.credits,
-          quantitiy: req.body.quantitiy,
+          quantity: req.body.quantity,
           address: req.body.address,
           morningTime: req.body.morningTime,
           eveningTime: req.body.eveningTime,
           package: req.body.package,
           user: req.body.user,
-          
+          status: req.body.status,
         });
         let save = await newSubscription.save();
         if (save) {

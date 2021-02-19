@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useState, useEffect } from "react";
 import { ProductContext } from "./index";
-import { createProduct, getAllProduct } from "./FetchApi";
+import { createProduct, getAllProduct,editProductbyVariant } from "./FetchApi";
 import { getAllCategory } from "../categories/FetchApi";
 
 const AddProductDetail = ({ categories }) => {
@@ -9,16 +9,19 @@ const AddProductDetail = ({ categories }) => {
   const alert = (msg, type) => (
     <div className={`bg-${type}-200 py-1 px-4 w-full`}>{msg}</div>
   );
-
+ const [variant, setVariant] = useState({
+   value:0,
+   unit:''
+ })
   const [fData, setFdata] = useState({
     pName: "",
     pDescription: "",
     pStatus: "Active",
     pImage: null, // Initial value will be null or empty array
     pCategory: "",
-    pPrice: "",
+    pPrice: 0,
     pOffer: 0,
-    pQuantity: "",
+    pQuantity: 0,
     pVariant: [],
     success: false,
     error: false,
@@ -49,6 +52,7 @@ const AddProductDetail = ({ categories }) => {
 
     try {
       let responseData = await createProduct(fData);
+      // let updateVariants= await editProductbyVariant(responseData.data)
       if (responseData.success) {
         fetchData();
         setFdata({
@@ -58,8 +62,8 @@ const AddProductDetail = ({ categories }) => {
           pImage: "",
           pStatus: "Active",
           pCategory: "",
-          pPrice: "",
-          pQuantity: "",
+          pPrice: 0,
+          pQuantity: 0,
           pOffer: 0,
           pVariant: [],
           success: responseData.success,
@@ -73,8 +77,8 @@ const AddProductDetail = ({ categories }) => {
             pImage: "",
             pStatus: "Active",
             pCategory: "",
-            pPrice: "",
-            pQuantity: "",
+            pPrice: 0,
+            pQuantity: 0,
             pOffer: 0,
             pVariant: [],
             success: false,
@@ -91,6 +95,13 @@ const AddProductDetail = ({ categories }) => {
       console.log(error);
     }
   };
+
+  const submitVariant = () => {
+    console.log(variant);
+    setFdata({...fData,pVariant:[...fData.pVariant,variant]})
+    console.log(fData);
+
+  }
 
   return (
     <Fragment>
@@ -276,39 +287,31 @@ const AddProductDetail = ({ categories }) => {
             </div>
 
             {/* <div className="flex space-x-1 py-1"> */}
-
             <div className="w-100 flex flex-col space-y-1 space-x-1">
               <label htmlFor="variantval">Select Variant*</label>
               <div className="w-100 flex flex-row space-x-1">
                 <input
-                  value={fData.pVariant.value}
+                  value={variant.value || 0}
                   onChange={(e) => {
-                    setFdata({
-                      ...fData,
-                      error: false,
-                      success: false,
-                      pVariant: { value: e.target.value },
-                    });
+                   setVariant({...variant,value:e.target.value})
                   }}
                   type="number"
                   className="px-2 py-1 border focus:outline-none w-1/4"
                   id="variantvalue"
                 />
                 <select
-                  value={fData.pVariant.unit}
+                  value={variant.unit || ''}
                   onChange={(e) => {
-                    setFdata({
-                      ...fData,
-                      error: false,
-                      success: false,
-                      pVariant: { unit: e.target.value },
-                    });
-                  
+                    setVariant({...variant,unit:e.target.value})
+
                   }}
                   name="variantunit"
                   className="px-2 py-1 border focus:outline-none"
                   id="variantunit"
                 >
+                  <option name="status" value="" selected multiple>
+                    Select unit
+                  </option>
                   <option name="status" value="Ltr.">
                     Ltr.
                   </option>
@@ -325,9 +328,16 @@ const AddProductDetail = ({ categories }) => {
                     units
                   </option>
                 </select>
+                <button className='btn btn-sm' type='button' onClick={(e)=>{
+                  submitVariant()
+                  document.getElementById('variantvalue').value=0;
+                  document.getElementById('variantunit').value='';
+                  }} > + </button>
+                  {fData.pVariant.map((item,index)=>{return <div key={index}>{`${item.value} ${item.unit}`}</div>})}
               </div>
            
             </div>
+            
             {/* <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="status">Select variant unit *</label>
               
