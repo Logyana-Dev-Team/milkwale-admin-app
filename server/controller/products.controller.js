@@ -71,17 +71,18 @@ class Product {
       return res.json({ error: "All filled must be required" });
     }
     // Validate Name and description
-    else if (pName.length > 255 || pDescription.length > 3000) {
+    else if (pName.length > 255 || pDescription.length > 4000) {
       Product.deleteImages(images, "file");
       return res.json({
-        error: "Name 255 & Description must not be 3000 charecter long",
+        error: "Name 255 & Description must not be 4000 charecter long",
       });
     }
     // Validate Images
-    else if (images.length !== 2) {
-      Product.deleteImages(images, "file");
-      return res.json({ error: "Must need to provide 2 images" });
-    } else {
+    // else if (images.length !== 2) {
+    //   Product.deleteImages(images, "file");
+    //   return res.json({ error: "Must need to provide 2 images" });
+    // } 
+    else {
       try {
         let allImages = [];
         for (const img of images) {
@@ -149,16 +150,17 @@ console.log(allVariants);
       return res.json({ error: "All filled must be required" });
     }
     // Validate Name and description
-    else if (pName.length > 255 || pDescription.length > 3000) {
+    else if (pName.length > 255 || pDescription.length > 4000) {
       return res.json({
-        error: "Name 255 & Description must not be 3000 charecter long",
+        error: "Name 255 & Description must not be 4000 charecter long",
       });
     }
     // Validate Update Images
-    else if (editImages && editImages.length == 1) {
-      Product.deleteImages(editImages, "file");
-      return res.json({ error: "Must need to provide 2 images" });
-    } else {
+    // else if (editImages && editImages.length == 1) {
+    //   Product.deleteImages(editImages, "file");
+    //   return res.json({ error: "Must need to provide 2 images" });
+    // } 
+    else {
       let editData = {
         pName,
         pDescription,
