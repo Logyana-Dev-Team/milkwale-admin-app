@@ -1,18 +1,18 @@
 import React, { Fragment, useContext, useState, useEffect } from "react";
 import { ProductContext } from "./index";
-import { createProduct, getAllProduct,editProductbyVariant } from "./FetchApi";
+import { createProduct, getAllProduct, editProductbyVariant } from "./FetchApi";
 import { getAllCategory } from "../categories/FetchApi";
 
 const AddProductDetail = ({ categories }) => {
   const { data, dispatch } = useContext(ProductContext);
-  
+  const [showImages, setShowImages] = useState([]);
   const alert = (msg, type) => (
     <div className={`bg-${type}-200 py-1 px-4 w-full`}>{msg}</div>
   );
- const [variant, setVariant] = useState({
-   value:0,
-   unit:''
- })
+  const [variant, setVariant] = useState({
+    value: 0,
+    unit: "",
+  });
   const [fData, setFdata] = useState({
     pName: "",
     pDescription: "",
@@ -42,7 +42,6 @@ const AddProductDetail = ({ categories }) => {
   const submitForm = async (e) => {
     e.preventDefault();
     e.target.reset();
-
     if (!fData.pImage) {
       setFdata({ ...fData, error: "Please upload at least 2 image" });
       setTimeout(() => {
@@ -91,6 +90,7 @@ const AddProductDetail = ({ categories }) => {
           return setFdata({ ...fData, error: false, success: false });
         }, 2000);
       }
+      setShowImages([])
     } catch (error) {
       console.log(error);
     }
@@ -98,10 +98,9 @@ const AddProductDetail = ({ categories }) => {
 
   const submitVariant = () => {
     console.log(variant);
-    setFdata({...fData,pVariant:[...fData.pVariant,variant]})
+    setFdata({ ...fData, pVariant: [...fData.pVariant, variant] });
     console.log(fData);
-
-  }
+  };
 
   return (
     <Fragment>
@@ -118,7 +117,7 @@ const AddProductDetail = ({ categories }) => {
       <div
         className={`${
           data.addProductModal ? "" : "hidden"
-        } fixed inset-0 flex items-center z-30 justify-center overflow-auto`}
+        } fixed inset-0 flex items-center z-30 justify-center overflow-y-auto`}
       >
         <div className="mt-32 md:mt-0 relative bg-white w-11/12 md:w-3/6 shadow-lg flex flex-col items-center space-y-4 px-4 py-4 md:px-8">
           <div className="flex items-center justify-between w-full pt-4">
@@ -222,23 +221,52 @@ const AddProductDetail = ({ categories }) => {
             </div>
             {/* Most Important part for uploading multiple image */}
             <div className="flex flex-col mt-4">
-              <label htmlFor="image">Product Images *</label>
-              <span className="text-gray-600 text-xs">Must need 2 images</span>
-              <input
-                onChange={(e) =>
-                  setFdata({
-                    ...fData,
-                    error: false,
-                    success: false,
-                    pImage: [...e.target.files],
-                  })
-                }
-                type="file"
-                accept=".jpg, .jpeg, .png"
-                className="px-4 py-1 border focus:outline-none"
-                id="image"
-                multiple
-              />
+              <label htmlFor="image">
+                Product Images *
+                <span className="text-gray-600 text-xs">
+                  Upload at least 2 images
+                </span>
+              </label>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <input
+                  onChange={(e) => {
+                    setFdata({
+                      ...fData,
+                      error: false,
+                      success: false,
+                      pImage: [...e.target.files],
+                    });
+                    setShowImages([...showImages, ...e.target.files]);
+                  }}
+                  type="file"
+                  accept=".jpg, .jpeg, .png"
+                  className="px-1 py-1 border focus:outline-none"
+                  style={{ width: "40%" }}
+                  id="image"
+                  multiple
+                />
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                  }}
+                >
+                  {showImages &&
+                    showImages.map((item, index) => {
+                      return (
+                        <div key={index}>
+                          <img
+                            src={URL.createObjectURL(item)}
+                            style={{ width: "35px", height: "35px" }}
+                            alt="NoImages"
+                          />
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
             </div>
             {/* Most Important part for uploading multiple image */}
             <div className="flex space-x-1 py-4">
@@ -293,17 +321,16 @@ const AddProductDetail = ({ categories }) => {
                 <input
                   value={variant.value || 0}
                   onChange={(e) => {
-                   setVariant({...variant,value:e.target.value})
+                    setVariant({ ...variant, value: e.target.value });
                   }}
                   type="number"
                   className="px-2 py-1 border focus:outline-none w-1/4"
                   id="variantvalue"
                 />
                 <select
-                  value={variant.unit || ''}
+                  value={variant.unit || ""}
                   onChange={(e) => {
-                    setVariant({...variant,unit:e.target.value})
-
+                    setVariant({ ...variant, unit: e.target.value });
                   }}
                   name="variantunit"
                   className="px-2 py-1 border focus:outline-none"
@@ -328,16 +355,35 @@ const AddProductDetail = ({ categories }) => {
                     units
                   </option>
                 </select>
-                <button className='btn btn-sm' type='button' onClick={(e)=>{
-                  submitVariant()
-                  document.getElementById('variantvalue').value=0;
-                  document.getElementById('variantunit').value='';
-                  }} > + </button>
-                  {fData.pVariant.map((item,index)=>{return <div key={index}>{`${item.value} ${item.unit}`}</div>})}
+
+                <button
+                  className="btn btn-sm"
+                  type="button"
+                  onClick={(e) => {
+                    submitVariant();
+                    document.getElementById("variantvalue").value = 0;
+                    document.getElementById("variantunit").value = "";
+                  }}
+                >
+                  <svg
+                    className="w-6 h-6 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+                {fData.pVariant.map((item, index) => {
+                  return <div key={index}>{`${item.value} ${item.unit}`}</div>;
+                })}
               </div>
-           
             </div>
-            
+
             {/* <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="status">Select variant unit *</label>
               
