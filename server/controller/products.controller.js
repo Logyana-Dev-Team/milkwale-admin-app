@@ -65,7 +65,7 @@ class Product {
       !pQuantity |
       !pCategory |
       !pOffer |
-      !pStatus 
+      !pStatus
     ) {
       Product.deleteImages(images, "file");
       return res.json({ error: "All filled must be required" });
@@ -81,7 +81,7 @@ class Product {
     // else if (images.length !== 2) {
     //   Product.deleteImages(images, "file");
     //   return res.json({ error: "Must need to provide 2 images" });
-    // } 
+    // }
     else {
       try {
         let allImages = [];
@@ -89,12 +89,12 @@ class Product {
           allImages.push(img.filename);
         }
 
-        let i=0;
-        let allVariants=[];
-for( i=0;i<pVariant.length; i++){
-  allVariants.push(JSON.parse(pVariant[i]))
-}
-console.log(allVariants);
+        let i = 0;
+        let allVariants = [];
+        for (i = 0; i < pVariant.length; i++) {
+          allVariants.push(JSON.parse(pVariant[i]));
+        }
+        console.log(allVariants);
         // for (const item of pVariant) {
         //   allVariants.push(JSON.parse(item));
         // }
@@ -108,11 +108,14 @@ console.log(allVariants);
           pCategory,
           pOffer,
           pStatus,
-          pVariant:allVariants
+          pVariant: allVariants,
         });
         let save = await newProduct.save();
         if (save) {
-          return res.json({ data:save,success: "Product created successfully" });
+          return res.json({
+            data: save,
+            success: "Product created successfully",
+          });
         }
       } catch (err) {
         console.log(err);
@@ -159,7 +162,7 @@ console.log(allVariants);
     // else if (editImages && editImages.length == 1) {
     //   Product.deleteImages(editImages, "file");
     //   return res.json({ error: "Must need to provide 2 images" });
-    // } 
+    // }
     else {
       let editData = {
         pName,
@@ -171,24 +174,22 @@ console.log(allVariants);
         pStatus,
         pVariant,
       };
-      
-        let allEditImages = [];
-        for (const img of editImages) {
-          allEditImages.push(img.filename);
-        
+
+      let allEditImages = [];
+      for (const img of editImages) {
+        allEditImages.push(img.filename);
+
         editData = { ...editData, pImages: allEditImages };
         Product.deleteImages(pImages.split(","), "string");
       }
 
-      let i=0;
-      let allVariants=[];
-for( i=0;i<pVariant.length; i++){
-allVariants.push(JSON.parse(pVariant[i]))
-editData = { ...editData, pVariant: allVariants };
-}
+      let i = 0;
+      let allVariants = [];
+      for (i = 0; i < pVariant.length; i++) {
+        allVariants.push(JSON.parse(pVariant[i]));
+        editData = { ...editData, pVariant: allVariants };
+      }
       try {
-
-
         let editProduct = productModel.findByIdAndUpdate(pId, editData);
         editProduct.exec((err) => {
           if (err) console.log(err);
@@ -228,7 +229,6 @@ editData = { ...editData, pVariant: allVariants };
         let singleProduct = await productModel
           .findById(pId)
           .populate("pCategory", "cName")
-          .populate("pRatingsReviews.user", "name email userImage");
         if (singleProduct) {
           return res.json({ Product: singleProduct });
         }
@@ -421,9 +421,8 @@ editData = { ...editData, pVariant: allVariants };
     }
   }
 
-  
   async postEditProductbyVariant(req, res) {
-    let {  _id,pVariant } = req.body;
+    let { _id, pVariant } = req.body;
     console.log(req.body);
 
     let pId = _id;
@@ -433,7 +432,7 @@ editData = { ...editData, pVariant: allVariants };
     // };
     try {
       productModel.findByIdAndUpdate(
-        { _id : pId },
+        { _id: pId },
         {
           $addToSet: {
             pVariant: pVariant,
@@ -458,7 +457,6 @@ editData = { ...editData, pVariant: allVariants };
       console.log(err);
     }
   }
-
 }
 
 // async getDeleteSubpack(req, res) {

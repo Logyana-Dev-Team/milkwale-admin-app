@@ -47,10 +47,11 @@ const AllCategory = (props) => {
               {/* <th className="px-4 py-2 border">Total</th> */}
               {/* <th className="px-4 py-2 border">Transaction Id</th> */}
               {/* <th className="px-4 py-2 border">Email</th> */}
-              {/* <th className="px-4 py-2 border">Delivery Date</th> */}
-              <th className="px-4 py-2 border">Address</th>
               <th className="px-4 py-2 border">Created at</th>
-              <th className="px-4 py-2 border">Updated at</th>
+
+              <th className="px-4 py-2 border">Delivery Date</th>
+              {/* <th className="px-4 py-2 border">Address</th> */}
+              {/* <th className="px-4 py-2 border">Updated at</th> */}
               <th className="px-4 py-2 border">Actions</th>
             </tr>
           </thead>
@@ -90,24 +91,27 @@ const AllCategory = (props) => {
 /* Single Category Component */
 const CategoryTable = ({ order, editOrder }) => {
   const { dispatch } = useContext(OrderContext);
-  
+  console.log(order);
 
   return (
     <Fragment>
       <tr className="border-b">
         <td className="w-48 hover:bg-gray-200 p-2 flex flex-col space-y-1">
-          {order.allProduct.map((product, i) => {
-            return (
-              <span className="block flex items-center space-x-2" key={i}>
+          {order.allProduct.map((product, index) => {
+            return (<>
+              <div key={index}>{console.log(product)}</div>
+           {/*    <span className="block flex items-center space-x-2" key={i}>
                 <img
                   className="w-8 h-8 object-cover object-center"
                   src={`${apiURL}/uploads/products/${product.id.pImages[0]}`}
                   alt="productImage"
-                />
+                /> 
                 <span>{product.id.pName}</span>
                 <span>x {product.quantitiy}</span>
-              </span>
-            );
+             
+              </span>   */}
+            </>
+            )
           })}
         </td>
         <td className="hover:bg-gray-200 p-2 text-center">{order.user.name}</td>
@@ -150,7 +154,7 @@ const CategoryTable = ({ order, editOrder }) => {
           {order.user.email}
         </td> */}
         {/* <td className="hover:bg-gray-200 p-2 text-center">{order.status}</td> */}
-        <td className="hover:bg-gray-200 p-2 text-center">{order.address}</td>
+        {/* <td className="hover:bg-gray-200 p-2 text-center">{order.address}</td> */}
         <td className="hover:bg-gray-200 p-2 text-center">
           {moment(order.createdAt).format("lll")}
         </td>

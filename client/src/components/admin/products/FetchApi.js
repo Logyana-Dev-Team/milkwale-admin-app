@@ -168,3 +168,12 @@ export const editProductbySubpack = async (product) => {
     }
   
 };
+
+export const getProductById = async (productId) => {
+  try {
+    let res = await axios.post(`${apiURL}/api/product/single-product`, productId);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

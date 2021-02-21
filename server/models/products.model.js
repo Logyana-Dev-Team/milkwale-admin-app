@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
 
-const dataObj = new mongoose.Schema({
-  unit: { type: String, required: true },
-  value: { type: Number, required: true },
-});
+// const dataObj = new mongoose.Schema({
+//   unit: { type: String, required: true },
+//   value: { type: Number, required: true },
+// });
 
 const productSchema = new mongoose.Schema(
   {
