@@ -157,8 +157,20 @@ const ProductTable = ({ product, deleteProduct, editProduct }) => {
         <td className="p-2 text-center">{product.pQuantity}</td>
         <td className="p-2 text-center">{product.pCategory.cName}</td>
         <td className="p-2 text-center">{product.pOffer}</td>
-        <td className="p-2 text-center">
-          {moment(product.createdAt).format("lll")}
+        <td
+          className="p-1 text-center"
+          style={{
+            fontSize: "12px",
+            display: "inline-flex",
+            marginBottom: "20px",
+          }}
+        >
+          {product.pVariant.map((item) => (
+            <div>
+              {item.value}
+              {item.unit},
+            </div>
+          ))}
         </td>
         <td className="p-2 text-center">
           {moment(product.updatedAt).format("lll")}

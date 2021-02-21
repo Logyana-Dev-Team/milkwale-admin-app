@@ -171,15 +171,24 @@ console.log(allVariants);
         pStatus,
         pVariant,
       };
-      if (editImages.length == 2) {
+      
         let allEditImages = [];
         for (const img of editImages) {
           allEditImages.push(img.filename);
-        }
+        
         editData = { ...editData, pImages: allEditImages };
         Product.deleteImages(pImages.split(","), "string");
       }
+
+      let i=0;
+      let allVariants=[];
+for( i=0;i<pVariant.length; i++){
+allVariants.push(JSON.parse(pVariant[i]))
+editData = { ...editData, pVariant: allVariants };
+}
       try {
+
+
         let editProduct = productModel.findByIdAndUpdate(pId, editData);
         editProduct.exec((err) => {
           if (err) console.log(err);

@@ -83,7 +83,13 @@ export const editProduct = async (product) => {
   formData.append("pPrice", product.pPrice);
   formData.append("pOffer", product.pOffer);
   formData.append("pImages", product.pImages);
-  formData.append("pVariant", product.pVariant);
+  // formData.append("pVariant", product.pVariant);
+  let i=0;
+  // let allVariants=[];
+for( i=0;i<product.pVariant.length; i++){
+    formData.append("pVariant", JSON.stringify(product.pVariant[i]));
+
+}
 
   try {
     let res = await axios.post(`${apiURL}/api/product/edit-product`, formData);
