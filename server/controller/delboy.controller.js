@@ -4,8 +4,7 @@ const bcrypt = require("bcryptjs");
 class Delboy {
   async getAllDelboy(req, res) {
     try {
-      let Delboys = await delboyModel
-        .find({})
+      let Delboys = await delboyModel.find({})
         .sort({ updatedAt : -1 });
       if (Delboys) {
         return res.json({ Delboys });
@@ -22,7 +21,7 @@ class Delboy {
     } else {
       try {
         let Delboy = await delboyModel
-          .findById(uId)
+          .findById({_id:uId})
         if (Delboy) {
           return res.json({ Delboy });
         }
@@ -57,17 +56,19 @@ class Delboy {
 
   async postEditDelboy(req, res) {
     let { uId, delname, delphone,delpassword } = req.body;
+    console.log(req.body);
+
     if (!uId || !delname || !delphone || !delpassword) {
       return res.json({ message: "All filled must be required" });
     } else {
-      let currentDelboy = delboyModel.findByIdAndUpdate(uId, {
+      let currentDelboy = delboyModel.findByIdAndUpdate({ _id:uId}, {
         delname: delname,
         delphone: delphone,
         delpassword:delpassword,
         updatedAt: Date.now(),
       });
       currentDelboy.exec((err, result) => {
-        if (err) console.log(err);
+        if (err) return err;
         return res.json({ success: "Delboy updated successfully" });
       });
     }
@@ -78,9 +79,9 @@ class Delboy {
     if (!uId) {
       return res.json({ message: "All filled must be required" });
     } else {
-      let currentDelboy = delboyModel.findByIdAndDelete(uId);
+      let currentDelboy = delboyModel.findByIdAndDelete({_id:uId});
       currentDelboy.exec((err, result) => {
-        if (err) console.log(err);
+        if (err) return err;
         return res.json({ success: "Delboy deleted successfully" });
       });
     }
@@ -104,7 +105,7 @@ class Delboy {
             password: newPassword,
           });
           passChange.exec((err, result) => {
-            if (err) console.log(err);
+            if (err) return err;
             return res.json({ success: "Password updated successfully" });
           });
         } else {
@@ -115,6 +116,37 @@ class Delboy {
       }
     }
   }
+
+
+  async postEditDelboyByOrder(req, res) {
+    let { _id, pOrder } = req.body;
+    console.log(req.body);
+
+    let id = _id;
+   
+    try {
+      delboyModel.findByIdAndUpdate(
+        { _id: id },
+        {
+          $addToSet: {
+            delCurrentOrders: pOrder,
+          },
+        },
+        { upsert: true },
+        (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            res.json({ success: "Orde edit successfully" });
+            // console.log("EDiting");
+          }
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
 }
 
 const ordersController = new Delboy();

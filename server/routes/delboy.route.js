@@ -10,5 +10,9 @@ router.post("/edit-delboy", delboyController.postEditDelboy);
 router.post("/delete-delboy", delboyController.getDeleteDelboy);
 
 router.post("/change-password", delboyController.changePassword);
+router.post("/edit-delboy-by-order", delboyController.postEditDelboyByOrder);
+
+
+
 
 module.exports = router;

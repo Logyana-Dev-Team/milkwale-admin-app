@@ -4,6 +4,8 @@ import moment from "moment";
 import { OrderContext } from "./index";
 import { fetchData, editOrderReq, deleteOrderReq } from "./Actions";
 
+import eye from "../../../assets/eye.png";
+
 const apiURL = process.env.REACT_APP_API_URL;
 
 const AllCategory = (props) => {
@@ -49,7 +51,7 @@ const AllCategory = (props) => {
               {/* <th className="px-4 py-2 border">Email</th> */}
               <th className="px-4 py-2 border">Created at</th>
 
-              <th className="px-4 py-2 border">Delivery Date</th>
+              {/* <th className="px-4 py-2 border">Delivery Date</th> */}
               {/* <th className="px-4 py-2 border">Address</th> */}
               {/* <th className="px-4 py-2 border">Updated at</th> */}
               <th className="px-4 py-2 border">Actions</th>
@@ -81,7 +83,7 @@ const AllCategory = (props) => {
           </tbody>
         </table>
         <div className="text-sm text-gray-600 mt-2">
-          Total {orders && orders.length } order found
+          Total {orders && orders.length} order found
         </div>
       </div>
     </Fragment>
@@ -98,9 +100,10 @@ const CategoryTable = ({ order, editOrder }) => {
       <tr className="border-b">
         <td className="w-48 hover:bg-gray-200 p-2 flex flex-col space-y-1">
           {order.allProduct.map((product, index) => {
-            return (<>
-              <div key={index}>{console.log(product)}</div>
-           {/*    <span className="block flex items-center space-x-2" key={i}>
+            return (
+              <>
+                <div key={index}>{console.log(product)}</div>
+                {/*    <span className="block flex items-center space-x-2" key={i}>
                 <img
                   className="w-8 h-8 object-cover object-center"
                   src={`${apiURL}/uploads/products/${product.id.pImages[0]}`}
@@ -110,8 +113,8 @@ const CategoryTable = ({ order, editOrder }) => {
                 <span>x {product.quantitiy}</span>
              
               </span>   */}
-            </>
-            )
+              </>
+            );
           })}
         </td>
         <td className="hover:bg-gray-200 p-2 text-center">{order.user.name}</td>
@@ -158,10 +161,16 @@ const CategoryTable = ({ order, editOrder }) => {
         <td className="hover:bg-gray-200 p-2 text-center">
           {moment(order.createdAt).format("lll")}
         </td>
-        <td className="hover:bg-gray-200 p-2 text-center">
+        {/* <td className="hover:bg-gray-200 p-2 text-center">
           {moment(order.updatedAt).format("lll")}
-        </td>
+        </td> */}
         <td className="p-2 flex items-center justify-center">
+          <span
+            onClick={(e) => editOrder(order._id, true, order.status)}
+            className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1"
+          >
+            <img src={eye} style={{ width: "23px", height: "23px" }} alt='eyeicon' />
+          </span>
           <span
             onClick={(e) => editOrder(order._id, true, order.status)}
             className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1"

@@ -8,13 +8,25 @@ const delboySchema = new mongoose.Schema(
       required: true,
     },
     delphone: {
-        type: Number,
-        required: true,
-      },
+      type: String,
+      required: true,
+    },
     delpassword: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
+    },
+    delCurrentOrders: [
+      {
+        orderId: { type: ObjectId, ref:'orders'},
+        status: String,
       }
+    ],
+    delCurrentSubOrders: [
+      {
+        orderId: { type: ObjectId, ref:'orders' },
+        status: String,
+      }
+    ],
   },
   { timestamps: true }
 );

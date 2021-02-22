@@ -14,6 +14,12 @@ export const fetchData = async (dispatch) => {
   }, 1000);
 };
 
+export const viewOrderReq = async (dispatch) => {
+  dispatch({ type: "loading", payload: true });
+ 
+      dispatch({ type: "loading", payload: false });
+    
+};
 /* This method call the editmodal & dispatch category context */
 export const editOrderReq = (oId, type, status, dispatch) => {
   if (type) {

@@ -78,7 +78,7 @@ class Order {
         updatedAt: Date.now(),
       });
       currentOrder.exec((err, result) => {
-        if (err) console.log(err);
+        if (err) return err;
         return res.json({ success: "Order updated successfully" });
       });
     }

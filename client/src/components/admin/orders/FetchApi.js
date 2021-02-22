@@ -11,7 +11,8 @@ export const getAllOrder = async () => {
   }
 };
 
-export const editCategory = async (oId, status) => {
+
+export const editOrder = async (oId, status) => {
   let data = { oId: oId, status: status };
   console.log(data);
   try {

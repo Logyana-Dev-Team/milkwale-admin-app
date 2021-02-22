@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useContext } from "react";
 import { OrderContext } from "./index";
 import UpdateOrderModal from "./UpdateOrderModal";
+import ViewOrderModal from "./ViewOrderModal";
 import SearchFilter from "./SearchFilter";
 import { filterOrder } from "./Actions";
 
@@ -114,7 +115,7 @@ const OrderMenu = (props) => {
             <SearchFilter />
           </div>
         </div>
-        {/*<AddCategoryModal/>*/}
+        <ViewOrderModal/>
         <UpdateOrderModal />
       </div>
     </Fragment>

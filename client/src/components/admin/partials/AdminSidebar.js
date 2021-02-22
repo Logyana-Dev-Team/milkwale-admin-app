@@ -176,9 +176,9 @@ const AdminSidebar = (props) => {
         <hr className="border-b border-gray-200" />
 
         <div
-          onClick={(e) => history.push("/admin/dashboard/customers")}
+          onClick={(e) => history.push("/admin/dashboard/deliveryboys")}
           className={`${
-            location.pathname === "/admin/dashboard/customers"
+            location.pathname === "/admin/dashboard/deliveryboys"
               ? "border-r-4 border-white bg-gray-100"
               : ""
           } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
@@ -199,7 +199,7 @@ const AdminSidebar = (props) => {
               />
             </svg>
           </span>
-          <span className="hover:text-white">Customers</span>
+          <span className="hover:text-white">Delivery Boys</span>
         </div>
       </div>
     </Fragment>
