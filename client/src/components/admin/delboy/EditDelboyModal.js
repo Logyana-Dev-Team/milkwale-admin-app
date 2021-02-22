@@ -115,7 +115,7 @@ const EditDelboyModal = (props) => {
                 }
                 value={delpassword}
                 className="px-4 py-2 border focus:outline-none"
-                type="password"
+                type="text"
                 
               />
             </div>

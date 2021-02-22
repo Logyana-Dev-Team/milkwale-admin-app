@@ -173,7 +173,7 @@ const AddDelboyModal = (props) => {
                 }
                 value={fData.delpassword}
                 className="px-4 py-2 border focus:outline-none"
-                type="password"
+                type="text"
                 
               />
             </div>
