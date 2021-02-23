@@ -30,6 +30,12 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    assignTo: {
+      type: String,
+      required: true,
+      default: "NA",
+    },
+
     status: {
       type: String,
       default: "Not processed",

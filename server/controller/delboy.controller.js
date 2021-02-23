@@ -20,8 +20,7 @@ class Delboy {
       return res.json({ error: "All filled must be required" });
     } else {
       try {
-        let Delboy = await delboyModel
-          .findById({_id:uId})
+        let Delboy = await delboyModel.findById({_id:uId})
         if (Delboy) {
           return res.json({ Delboy });
         }

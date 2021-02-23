@@ -1,10 +1,13 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { useState, Fragment, useContext, useEffect } from "react";
 import moment from "moment";
 
 import { OrderContext } from "./index";
 import { fetchData, editOrderReq, deleteOrderReq } from "./Actions";
 
 import eye from "../../../assets/eye.png";
+import { editOrder } from "./FetchApi";
+import Axios from "axios";
+import { getAllDelboy } from "../delboy/FetchApi";
 
 const apiURL = process.env.REACT_APP_API_URL;
 
@@ -46,6 +49,9 @@ const AllCategory = (props) => {
               <th className="px-4 py-2 border">Customer</th>
 
               <th className="px-4 py-2 border">Status</th>
+              {/* <th className="px-4 py-2 border">Assigned</th> */}
+              <th className="px-4 py-2 border">Assign to</th>
+
               {/* <th className="px-4 py-2 border">Total</th> */}
               {/* <th className="px-4 py-2 border">Transaction Id</th> */}
               {/* <th className="px-4 py-2 border">Email</th> */}
@@ -64,9 +70,9 @@ const AllCategory = (props) => {
                   <CategoryTable
                     key={i}
                     order={item}
-                    editOrder={(oId, type, status) =>
-                      editOrderReq(oId, type, status, dispatch)
-                    }
+                    // editOrder={(oId, type, status,assignTo) =>
+                    //   editOrderReq(oId, type, status, dispatch,assignTo)
+                    // }
                   />
                 );
               })
@@ -91,10 +97,55 @@ const AllCategory = (props) => {
 };
 
 /* Single Category Component */
-const CategoryTable = ({ order, editOrder }) => {
+const CategoryTable = ({ order }) => {
   const { dispatch } = useContext(OrderContext);
-  console.log(order);
+  // console.log(order);
 
+  const [added, setAdded] = useState(false)
+  const [delboy, setDelboy] = useState([]);
+  const [datasend, setDatasend] = useState({
+    oId: order._id,
+    status: order.status,
+    assignTo: order.assignTo,
+  });
+  const [showAssignee, setShowAssignee] = useState("");
+  const getAllDelboy = async () => {
+    try {
+      let res = await Axios.get(`${apiURL}/api/delboy/all-delboy`);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchDelboys = async () => {
+    let responseData = await getAllDelboy();
+    //  console.log(responseData.Delboys)
+
+    setDelboy(responseData.Delboys);
+  };
+
+  const getSelected = (id) => {
+    console.log(id);
+    Axios.post(`${apiURL}/api/delboy/single-delboy`, { uId: id })
+      .then((res) => setShowAssignee(res.data.Delboy.delname))
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    fetchDelboys();
+    getSelected(datasend.assignTo);
+  }, [datasend]);
+  const editOrder = (datasend) => {
+    console.log(datasend);
+    Axios.post(`${apiURL}/api/order/update-order`, datasend)
+      .then((res) => {
+        console.log(res.data);
+        console.log("working");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <Fragment>
       <tr className="border-b">
@@ -102,7 +153,7 @@ const CategoryTable = ({ order, editOrder }) => {
           {order.allProduct.map((product, index) => {
             return (
               <>
-                <div key={index}>{console.log(product)}</div>
+                <div key={index}></div>
                 {/*    <span className="block flex items-center space-x-2" key={i}>
                 <img
                   className="w-8 h-8 object-cover object-center"
@@ -117,7 +168,9 @@ const CategoryTable = ({ order, editOrder }) => {
             );
           })}
         </td>
-        <td className="hover:bg-gray-200 p-2 text-center">{order.user.name}</td>
+        <td className="hover:bg-gray-200 p-2 text-center">
+          {order.user.name || ""}
+        </td>
 
         <td className="hover:bg-gray-200 p-2 text-center cursor-default">
           {order.status === "Not processed" && (
@@ -146,6 +199,80 @@ const CategoryTable = ({ order, editOrder }) => {
             </span>
           )}
         </td>
+
+        {/* <td className="text-center">{showAssignee}</td> */}
+        <td className="text-center">
+          <select
+            value={datasend.assignTo}
+            onChange={(e) => {
+              // editOrder(order._id,dispatch,order.status,order.assignTo)
+              setDatasend({ ...datasend, assignTo: e.target.value });
+            }}
+            name="variantunit"
+            className="px-1 py-1 border focus:outline-none"
+            id="variantunit"
+          >
+            <option name="status" value="NA">
+                    NA
+                  </option>
+            {delboy.map((item, index) => {
+              return (
+                <option key={index} name="status" value={item._id}>
+                  {item.delname}
+                </option>
+              );
+            })}
+            {/* <option name="status" value="">
+                    Select unit
+                  </option>
+                  <option name="status" value="Ltr.">
+                    Ltr.
+                  </option>
+                  <option name="status" value="ml">
+                    ml
+                  </option>
+                  <option name="status" value="Kg">
+                    Kg
+                  </option>
+                  <option name="status" value="gm">
+                    gm
+                  </option>
+                  <option name="status" value="units">
+                    units
+                  </option> */}
+          </select>
+          {added ? (<button
+            type="button"
+            className='focus:outline-none'
+            onClick={()=>{
+              editOrder(datasend) 
+              setAdded(!added)
+              }}
+            style={{
+              backgroundColor: "#303031",
+              color: "white",
+              padding: "5px",
+            }}
+          >
+            Add
+          </button>) : (<button
+            type="button"
+            className='focus:outline-none'
+            onClick={()=>{
+              // editOrder(datasend) 
+              setAdded(!added)
+              setDatasend({assignTo:'NA'})
+              }}
+            style={{
+              backgroundColor: "red",
+              color: "black",
+              padding: "5px",
+            }}
+          >
+            Delete
+          </button>)}
+          
+        </td>
         {/* <td className="hover:bg-gray-200 p-2 text-center">
           ${order.amount}.00
         </td>
@@ -165,7 +292,7 @@ const CategoryTable = ({ order, editOrder }) => {
           {moment(order.updatedAt).format("lll")}
         </td> */}
         <td className="p-2 flex items-center justify-center">
-          <span
+          {/* <span
             onClick={(e) => editOrder(order._id, true, order.status)}
             className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1"
           >
@@ -188,7 +315,7 @@ const CategoryTable = ({ order, editOrder }) => {
                 clipRule="evenodd"
               />
             </svg>
-          </span>
+          </span> */}
           <span
             onClick={(e) => deleteOrderReq(order._id, dispatch)}
             className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1"

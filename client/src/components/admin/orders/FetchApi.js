@@ -4,7 +4,7 @@ const apiURL = process.env.REACT_APP_API_URL;
 export const getAllOrder = async () => {
   try {
     let res = await axios.get(`${apiURL}/api/order/get-all-orders`);
-    console.log(res.data);
+    // console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -14,7 +14,7 @@ export const getAllOrder = async () => {
 
 export const editOrder = async (oId, status) => {
   let data = { oId: oId, status: status };
-  console.log(data);
+  // console.log(data);
   try {
     let res = await axios.post(`${apiURL}/api/order/update-order`, data);
     return res.data;

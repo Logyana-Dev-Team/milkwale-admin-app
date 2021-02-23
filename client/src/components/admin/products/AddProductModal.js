@@ -90,7 +90,7 @@ const AddProductDetail = ({ categories }) => {
           return setFdata({ ...fData, error: false, success: false });
         }, 2000);
       }
-      setShowImages([])
+      setShowImages([]);
     } catch (error) {
       console.log(error);
     }
@@ -426,11 +426,18 @@ const AddProductDetail = ({ categories }) => {
                 />
               </div>
             </div>
-            <div className="flex flex-col space-y-1 w-full pb-4 md:pb-6 mt-4">
+            <div
+              className="flex flex-col space-y-1 w-full mt-4"
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+            >
               <button
-                style={{ background: "#303031" }}
+                style={{ background: "#303031", margin: "5px", width: "30%" }}
                 type="submit"
-                className="rounded-full bg-gray-800 text-gray-100 text-lg font-medium py-1"
+                className=" bg-gray-800 text-gray-100 text-lg font-medium py-1"
               >
                 Create product
               </button>

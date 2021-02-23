@@ -37,14 +37,15 @@ class Order {
   }
 
   async postCreateOrder(req, res) {
-    let { allProduct, user, amount, transactionId, address, phone,status} = req.body;
+    let { allProduct, user, amount, transactionId, address, phone,status,assignTo} = req.body;
     if (
       !allProduct ||
       !user ||
       !amount ||
       !transactionId ||
       !address ||
-      !phone
+      !phone || 
+      !assignTo
     ) {
       return res.json({ message: "All filled must be required" });
     } else {
@@ -56,6 +57,7 @@ class Order {
           transactionId,
           address,
           phone,
+          assignTo,
           status
         });
         let save = await newOrder.save();
@@ -69,15 +71,15 @@ class Order {
   }
 
   async postUpdateOrder(req, res) {
-    let { oId, status } = req.body;
-    if (!oId || !status) {
+    let { oId, status,assignTo } = req.body;
+    // console.log(req.body);
+    if (!oId || !status || !assignTo) {
       return res.json({ message: "All filled must be required" });
     } else {
-      let currentOrder = orderModel.findByIdAndUpdate(oId, {
+      await orderModel.findByIdAndUpdate({_id:oId}, {
         status: status,
-        updatedAt: Date.now(),
-      });
-      currentOrder.exec((err, result) => {
+        assignTo: assignTo
+      },{new:true}).exec((err, result) => {
         if (err) return err;
         return res.json({ success: "Order updated successfully" });
       });
