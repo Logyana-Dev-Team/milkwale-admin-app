@@ -101,7 +101,7 @@ const CategoryTable = ({ order }) => {
   const { dispatch } = useContext(OrderContext);
   // console.log(order);
 
-  const [added, setAdded] = useState(false)
+  const [added, setAdded] = useState(false);
   const [delboy, setDelboy] = useState([]);
   const [datasend, setDatasend] = useState({
     oId: order._id,
@@ -126,26 +126,77 @@ const CategoryTable = ({ order }) => {
   };
 
   const getSelected = (id) => {
-    console.log(id);
-    Axios.post(`${apiURL}/api/delboy/single-delboy`, { uId: id })
-      .then((res) => setShowAssignee(res.data.Delboy.delname))
-      .catch((err) => console.log(err));
+    // console.log(id);
+    if (id === "") {
+      setShowAssignee("NA");
+    } else {
+      Axios.post(`${apiURL}/api/delboy/single-delboy`, { uId: id })
+        .then((res) => setShowAssignee(res.data.Delboy.delname))
+        .catch((err) => console.log(err));
+    }
   };
   useEffect(() => {
     fetchDelboys();
-    getSelected(datasend.assignTo);
+    // getSelected(datasend.assignTo);
   }, [datasend]);
   const editOrder = (datasend) => {
-    console.log(datasend);
-    Axios.post(`${apiURL}/api/order/update-order`, datasend)
-      .then((res) => {
-        console.log(res.data);
-        console.log("working");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // console.log(datasend);
+    if (datasend.assignTo !== "NA") {
+      // console.log(datasend);
+      Axios.post(`${apiURL}/api/order/update-order`, datasend)
+        .then((res) => {
+          // console.log(res.data);
+          // console.log("working");
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("Errorr");
+    }
   };
+
+  const assignOrder =(datasend)=>{
+    if (datasend.assignTo !== "NA") {
+      // console.log(datasend);
+      let data ={
+        oId: order._id,
+        status: "Processing",
+        assignTo: datasend.assignTo,
+      }
+      // console.log(data);
+      Axios.post(`${apiURL}/api/order/update-order`, data)
+        .then((res) => {
+          // console.log(res.data);
+          // console.log("working");
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("Errorr");
+    }
+  }
+
+  const DeleteDeliveryBoy=(id,status)=>{
+    let data={
+      oId: id,
+    status: "Not processed",
+    assignTo: "NA",
+    }
+    Axios.post(`${apiURL}/api/order/update-order`, data)
+        .then((res) => {
+          // console.log(res.data);
+          // console.log("working");
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }
+
   return (
     <Fragment>
       <tr className="border-b">
@@ -202,76 +253,72 @@ const CategoryTable = ({ order }) => {
 
         {/* <td className="text-center">{showAssignee}</td> */}
         <td className="text-center">
-          <select
-            value={datasend.assignTo}
-            onChange={(e) => {
-              // editOrder(order._id,dispatch,order.status,order.assignTo)
-              setDatasend({ ...datasend, assignTo: e.target.value });
-            }}
-            name="variantunit"
-            className="px-1 py-1 border focus:outline-none"
-            id="variantunit"
-          >
-            <option name="status" value="NA">
-                    NA
-                  </option>
-            {delboy.map((item, index) => {
-              return (
-                <option key={index} name="status" value={item._id}>
-                  {item.delname}
-                </option>
-              );
-            })}
-            {/* <option name="status" value="">
+          {order.assignTo !=="NA" ? (
+            <>
+              <div>{order.assignTo}</div>
+              <button
+                type="button"
+                className="focus:outline-none"
+                onClick={() => {
+                  // editOrder(datasend)
+                  setAdded(!added);
+                  DeleteDeliveryBoy(order._id,order.status);
+                  setDatasend({ assignTo: "NA" });
+                }}
+                style={{
+                  backgroundColor: "red",
+                  color: "black",
+                  padding: "5px",
+                }}
+              >
+                Delete
+              </button>
+            </>
+          ) : (
+            <>
+              <select
+                // value={order.assignTo}
+                onChange={(e) => {
+                  // editOrder(order._id,dispatch,order.status,order.assignTo)
+                  setDatasend({ ...datasend, assignTo: e.target.value });
+                }}
+                name="variantunit"
+                className="px-1 py-1 border focus:outline-none"
+                id="variantunit"
+              >
+                {delboy.length > 0 &&
+                  delboy.map((item, index) => {
+                    return (
+                      <option key={index} name="status" value={item.delname}>
+                        {item.delname}
+                      </option>
+                    );
+                  })}
+                {/* <option name="status" value="">
                     Select unit
-                  </option>
-                  <option name="status" value="Ltr.">
-                    Ltr.
-                  </option>
-                  <option name="status" value="ml">
-                    ml
-                  </option>
-                  <option name="status" value="Kg">
-                    Kg
-                  </option>
-                  <option name="status" value="gm">
-                    gm
                   </option>
                   <option name="status" value="units">
                     units
                   </option> */}
-          </select>
-          {added ? (<button
-            type="button"
-            className='focus:outline-none'
-            onClick={()=>{
-              editOrder(datasend) 
-              setAdded(!added)
-              }}
-            style={{
-              backgroundColor: "#303031",
-              color: "white",
-              padding: "5px",
-            }}
-          >
-            Add
-          </button>) : (<button
-            type="button"
-            className='focus:outline-none'
-            onClick={()=>{
-              // editOrder(datasend) 
-              setAdded(!added)
-              setDatasend({assignTo:'NA'})
-              }}
-            style={{
-              backgroundColor: "red",
-              color: "black",
-              padding: "5px",
-            }}
-          >
-            Delete
-          </button>)}
-          
+              </select>
+              <button
+                type="button"
+                className="focus:outline-none"
+                onClick={() => {
+                  // editOrder(datasend);
+                  assignOrder(datasend);
+                  // setAdded(!added);
+                }}
+                style={{
+                  backgroundColor: "#303031",
+                  color: "white",
+                  padding: "5px",
+                }}
+              >
+                Add
+              </button>
+            </>
+          )}
         </td>
         {/* <td className="hover:bg-gray-200 p-2 text-center">
           ${order.amount}.00
