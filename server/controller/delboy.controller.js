@@ -136,7 +136,7 @@ class Delboy {
           if (err) {
             console.log(err);
           } else {
-            res.json({ success: "Orde edit successfully" });
+            res.json({ success: "Order edit successfully" });
             // console.log("EDiting");
           }
         }

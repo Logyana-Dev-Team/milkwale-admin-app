@@ -34,7 +34,7 @@ class Product {
         .populate("pCategory", "_id cName")
         .sort({ updatedAt: -1 });
       if (Products) {
-        return res.json({ Products });
+        return res.status(200).json({ Products });
       }
     } catch (err) {
       console.log(err);
