@@ -8,7 +8,7 @@ const customizeModel = require("../models/customize.model");
 class Customize {
   async getImages(req, res) {
     try {
-      let Images = await customizeModel.find({});
+      let Images = await customizeModel.find({}).select("slideImage");
       if (Images) {
         return res.json({ Images });
       }

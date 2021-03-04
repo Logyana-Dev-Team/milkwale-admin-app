@@ -26,15 +26,15 @@ class Auth {
 
   /* User Registration/Signup controller  */
   async postSignup(req, res) {
-    let { name, email, password, cPassword } = req.body;
+    let { name, email, password, phoneNumber } = req.body;
     let error = {};
-    if (!name || !email || !password || !cPassword) {
+    if (!name || !email || !password || !phoneNumber) {
       error = {
         ...error,
         name: "Filed must not be empty",
         email: "Filed must not be empty",
         password: "Filed must not be empty",
-        cPassword: "Filed must not be empty",
+        phoneNumber: "Filed must not be empty",
       };
       return res.json({ error });
     }
@@ -50,6 +50,7 @@ class Auth {
             password: "Password must be 8 charecter",
             name: "",
             email: "",
+            phoneNumber:"",
           };
           return res.json({ error });
         } else {
@@ -70,8 +71,9 @@ class Auth {
                 name,
                 email,
                 password,
+                phoneNumber,
                 // ========= Here role 1 for admin signup role 0 for customer signup =========
-                role: 1,
+                role: 0,
               });
               newUser
                 .save()
@@ -102,17 +104,17 @@ class Auth {
 
   /* User Login/Signin controller  */
   async postSignin(req, res) {
-    let { email, password } = req.body;
-    if (!email || !password) {
+    let { phoneNumber, password } = req.body;
+    if (!phoneNumber || !password) {
       return res.json({
         error: "Fields must not be empty",
       });
     }
     try {
-      const data = await userModel.findOne({ email: email });
+      const data = await userModel.findOne({ phoneNumber: phoneNumber });
       if (!data) {
         return res.json({
-          error: "Invalid email or password",
+          error: "Invalid phoneNumber or password",
         });
       } else {
         const login = await bcrypt.compare(password, data.password);
@@ -124,11 +126,11 @@ class Auth {
           const encode = jwt.verify(token, JWT_SECRET);
           return res.json({
             token: token,
-            user: encode,
+            userId: encode,
           });
         } else {
           return res.json({
-            error: "Invalid email or password",
+            error: "Invalid phoneNumber or password",
           });
         }
       }

@@ -78,11 +78,13 @@ const AllProduct = (props) => {
           <thead>
             <tr>
               <th className="px-4 py-2 border">Product</th>
+              <th className="px-4 py-2 border">Category</th>
+
               <th className="px-4 py-2 border">Description</th>
               <th className="px-4 py-2 border">Image</th>
+
               <th className="px-4 py-2 border">Status</th>
               <th className="px-4 py-2 border">Stock</th>
-              <th className="px-4 py-2 border">Category</th>
               <th className="px-4 py-2 border">Offer</th>
               <th className="px-4 py-2 border">Variants</th>
               <th className="px-4 py-2 border">Updated at</th>
@@ -133,6 +135,8 @@ const ProductTable = ({ product, deleteProduct, editProduct }) => {
             ? product.pDescription.substring(1, 15) + "..."
             : product.pName}
         </td>
+        <td className="p-2 text-center">{product.pCategory.cName}</td>
+
         <td className="p-2 text-left">
           {product.pDescription.slice(0, 15)}...
         </td>
@@ -143,6 +147,7 @@ const ProductTable = ({ product, deleteProduct, editProduct }) => {
             alt="pic"
           />
         </td>
+
         <td className="p-2 text-center">
           {product.pStatus === "Active" ? (
             <span className="bg-green-200 rounded-full text-center text-xs px-2 font-semibold">
@@ -155,7 +160,6 @@ const ProductTable = ({ product, deleteProduct, editProduct }) => {
           )}
         </td>
         <td className="p-2 text-center">{product.pQuantity}</td>
-        <td className="p-2 text-center">{product.pCategory.cName}</td>
         <td className="p-2 text-center">{product.pOffer}</td>
         <td
           className="p-1 text-center"
