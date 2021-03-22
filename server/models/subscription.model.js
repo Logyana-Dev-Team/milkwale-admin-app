@@ -4,7 +4,7 @@ const { ObjectId } = mongoose.Schema.Types;
 const subscriptionSchema = new mongoose.Schema(
   {
     subscriptionProduct: {
-      id: { type: ObjectId, ref: "products" }
+      subId: { type: ObjectId, ref: "products" }
     },
     user: {
       type: ObjectId,
@@ -12,17 +12,9 @@ const subscriptionSchema = new mongoose.Schema(
       required: true,
     },
 
-    // amount: {
-    //   type: Number,
-    //   required: true,
-    // },
-    // transactionId: {
-    //   type: String,
-    //   required: true,
-    // },
+   
     address: {
-      type: String,
-      required: true,
+      type: ObjectId, ref: "useraddress.address"
     },
     morningTime: {
       type: String,
@@ -40,14 +32,11 @@ const subscriptionSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    quantity: {
-      type: String,
-      required: true,
+    assignTo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"delboy",
+      default: "NA",
     },
-    // phone: {
-    //   type: Number,
-    //   required: true,
-    // },
     status: {
       type: String,
       default: "Not processed",

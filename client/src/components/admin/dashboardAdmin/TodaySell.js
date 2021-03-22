@@ -88,8 +88,9 @@ const TodayOrderTable = ({ order }) => {
           {order.allProduct.map((item, index) => {
             return (
               <div key={index} className="flex space-x-2">
-                <span>{item.id.pName}</span>
-                <span>{item.quantitiy}x</span>
+                {/* <span>{item.productId.pName}</span>
+                <span>{item.quantitiy}x</span> */}
+               { console.log(item)}
               </div>
             );
           })}
@@ -100,7 +101,7 @@ const TodayOrderTable = ({ order }) => {
               <img
                 key={index}
                 className="w-12 h-12 object-cover"
-                src={`${apiURL}/uploads/products/${item.id.pImages[0]}`}
+                // src={`${apiURL}/uploads/products/${item.productId.pImages[0]}`}
                 alt="Pic"
               />
             );

@@ -8,7 +8,7 @@ class User {
         .find({})
         .populate("allProduct.id", "pName pImages pPrice")
         .populate("user", "name email")
-        .sort({ updatedAt : -1 });
+        .sort({ updatedAt: -1 });
       if (Users) {
         return res.json({ Users });
       }
@@ -25,7 +25,10 @@ class User {
       try {
         let User = await userModel
           .findById(uId)
-          .select("name email phoneNumber userImage updatedAt createdAt");
+          .select(
+            "name email phoneNumber userImage updatedAt createdAt wishlist"
+          )
+          .populate("wishlist.productId");
         if (User) {
           return res.json({ User });
         }
@@ -127,6 +130,66 @@ class User {
         }
       }
     }
+  }
+
+  async addToWishlist(req, res) {
+    const { userId, productId } = await req.body;
+    // console.log(userId, productId);
+    userModel.findById({ _id: userId }).exec((error, user) => {
+      if (error) return res.status(400).json({ error });
+      if (user) {
+        let data = user.wishlist;
+        const reqProduct = req.body.productId;
+        let isPresent = data.find((p) => p.productId == reqProduct);
+        if (isPresent) {
+          return res.status(201).json({
+            message: "Product-present",
+          });
+        }
+
+        //put only two equals == ..therefore it will not check type
+
+        userModel
+          .findByIdAndUpdate(
+            { _id: userId },
+            {
+              $push: {
+                wishlist: { productId: productId },
+              },
+            },
+            { new: true, upsert: true }
+          )
+          .exec((error, product) => {
+            if (error)
+              return res
+                .status(400)
+                .json({ error, message: "product not found" });
+            if (product) {
+              res.status(201).json({ product, message: "Added to Wishlist" });
+            }
+          });
+      }
+    });
+  }
+  async deleteFromWishlist(req, res) {
+    let { productId, userId } = await req.body;
+    // console.log(userId, productId);
+    await userModel
+      .findOneAndUpdate(
+        { _id: userId },
+        {
+          $pull: {
+            wishlist: { productId: productId },
+          },
+        },
+        { new: true }
+      )
+      .exec((error, result) => {
+        if (error) return res.status(400).json({ error });
+        if (result) {
+          res.status(202).json({ result });
+        }
+      });
   }
 }
 

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema(
+const adminSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+   
     },
     password: {
       type: String,
@@ -17,7 +18,7 @@ const userSchema = new mongoose.Schema(
     },
     userRole: {
       type: Number,
-      default: 0,
+      default: 1, 
       // By default 0 for customer signup
       // 1 for admin signup
       required: true,
@@ -37,11 +38,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    wishlist: [
-      {
-        productId: { type: mongoose.Schema.Types.ObjectId, ref: "products" },
-      },
-    ],
     history: {
       type: Array,
       default: [],
@@ -50,5 +46,5 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const userModel = mongoose.model("users", userSchema);
-module.exports = userModel;
+const adminModel = mongoose.model("adminmodel", adminSchema);
+module.exports = adminModel;

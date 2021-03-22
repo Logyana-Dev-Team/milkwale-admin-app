@@ -35,6 +35,8 @@ const subscriptionRouter = require("./routes/subscription.route");
 const usersRouter = require("./routes/users.route");
 const customizeRouter = require("./routes/customize.route");
 const cartRouter = require("./routes/cart.route");
+const addressRouter = require("./routes/address.route");
+const adminRouter = require("./routes/admin.route");
 
 
 // Import Auth middleware for check user login or not~
@@ -74,6 +76,8 @@ app.use("/api/subscription", subscriptionRouter);
 app.use("/api/delboy", delboyRouter);
 app.use("/api/customize", customizeRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/address", addressRouter);
+app.use("/api/admin", adminRouter);
 
 // Run Server
 const PORT = process.env.PORT || 8000;

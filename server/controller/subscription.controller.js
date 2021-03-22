@@ -5,8 +5,8 @@ class Subscription {
     try {
       let Subscription = await subscriptionModel
         .find({})
-        .populate("subscriptionProduct.id", "pName pImages pPrice")
-        .populate("user", "name phone userImage")
+        .populate("subscriptionProduct.subId", "pName pPrice pVariant")
+        .populate("user", "name phoneNumber")
         .sort({ updatedAt : -1 });
       if (Subscription) {
         return res.json({ Subscription });
@@ -24,8 +24,8 @@ class Subscription {
       try {
         let Subscription = await subscriptionModel
           .find({ user: uId })
-          .populate("allProduct.id", "pName pImages pPrice")
-          .populate("user", "name email")
+          .populate("subscriptionProduct.subId", "pName pPrice pVariant")
+          .populate("user", "name phoneNumber")
           .sort({ _id: -1 });
         if (Subscription) {
           return res.json({ Subscription });
@@ -38,15 +38,14 @@ class Subscription {
 
   async postCreateSubscription(req, res) {
     // let { allProduct, user, amount, transactionId, address, phone } = req.body;
-
     if (!req.body) {
       return res.json({ message: "All filled must be required" });
     } else {
       try {
         let newSubscription = new subscriptionModel({
-          subscriptionProduct: req.body.subscriptionProduct,
+          subscriptionProduct:{subId: req.body.subscriptionProduct},
           credits: req.body.credits,
-          quantity: req.body.quantity,
+          // quantity: req.body.quantity,
           address: req.body.address,
           morningTime: req.body.morningTime,
           eveningTime: req.body.eveningTime,

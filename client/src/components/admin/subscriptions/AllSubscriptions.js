@@ -41,12 +41,12 @@ const AllCategory = (props) => {
           <thead>
             <tr>
               {/* <th className="px-4 py-2 border">Products</th> */}
-              <th className="px-4 py-2 border">Subscription Id</th>
+              {/* <th className="px-4 py-2 border">Subscription Id</th> */}
               <th className="px-4 py-2 border">Customer</th>
 
               <th className="px-4 py-2 border">Status</th>
 
-              <th className="px-4 py-2 border">Address</th>
+              {/* <th className="px-4 py-2 border">Address</th> */}
               {/* <th className="px-4 py-2 border">Transaction Id</th> */}
               {/* <th className="px-4 py-2 border">Email</th>
               <th className="px-4 py-2 border">Phone</th>
@@ -104,21 +104,22 @@ const CategoryTable = ({ subscription, editSubscription }) => {
               <span className="block flex items-center space-x-2" key={i}>
                 <img
                   className="w-8 h-8 object-cover object-center"
-                  src={`${apiURL}/uploads/products/${product.id.pImages[0]}`}
+                  src={`${apiURL}/uploads/products/${product.subId.pImages[0]}`}
                   alt="productImage"
                 />
-                <span>{product.id.pName}</span>
+                <span>{product.subId.pName}</span>
                 <span>{product.quantitiy}x</span>
               </span>
             );
           })} 
         </td>*/}
-        <td className="hover:bg-gray-200 p-2 text-center">ID{subscription._id.slice(-5).toUpperCase()}</td>
+        {/* <td className="hover:bg-gray-200 p-2 text-center">ID{subscription._id.slice(-5).toUpperCase()}</td> */}
+        <td className="hover:bg-gray-200 p-2 text-center">{subscription.user.name}</td>
 
         <td className="hover:bg-gray-200 p-2 text-center cursor-default">
           {subscription.status === "Not processed" && (
             <span className="block text-red-600 rounded-full text-center text-xs px-2 font-semibold">
-              {subscription.status}
+              {subscription.status}{console.log(subscription)}
             </span>
           )}
           {subscription.status === "Processing" && (
@@ -152,16 +153,16 @@ const CategoryTable = ({ subscription, editSubscription }) => {
         <td className="hover:bg-gray-200 p-2 text-center">
           {subscription.user.email}
         </td> */}
-        <td className="hover:bg-gray-200 p-2 text-center">{subscription.phone}</td>
-        <td className="hover:bg-gray-200 p-2 text-center">{subscription.address}</td>
+        {/* <td className="hover:bg-gray-200 p-2 text-center">{subscription.phone}</td> */}
+        {/* <td className="hover:bg-gray-200 p-2 text-center">{subscription.address}</td> */}
         <td className="hover:bg-gray-200 p-2 text-center">{subscription.morningTime}</td>
         <td className="hover:bg-gray-200 p-2 text-center">{subscription.eveningTime}</td>
-        <td className="hover:bg-gray-200 p-2 text-center">
+        {/* <td className="hover:bg-gray-200 p-2 text-center">
           {moment(subscription.createdAt).format("lll")}
         </td>
         <td className="hover:bg-gray-200 p-2 text-center">
           {moment(subscription.updatedAt).format("lll")}
-        </td>
+        </td> */}
         <td className="p-2 flex items-center justify-center">
           <span
             onClick={(e) => editSubscription(subscription._id, true, subscription.status)}

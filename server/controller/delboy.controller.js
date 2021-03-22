@@ -1,11 +1,12 @@
 const delboyModel = require("../models/delboy.model");
 const bcrypt = require("bcryptjs");
+const orderModel = require("../models/orders.model");
+const subscriptionModel = require("../models/subscription.model");
 
 class Delboy {
   async getAllDelboy(req, res) {
     try {
-      let Delboys = await delboyModel.find({})
-        .sort({ updatedAt : -1 });
+      let Delboys = await delboyModel.find({}).sort({ updatedAt: -1 });
       if (Delboys) {
         return res.json({ Delboys });
       }
@@ -20,7 +21,7 @@ class Delboy {
       return res.json({ error: "All filled must be required" });
     } else {
       try {
-        let Delboy = await delboyModel.findById({_id:uId})
+        let Delboy = await delboyModel.findById({ _id: uId });
         if (Delboy) {
           return res.json({ Delboy });
         }
@@ -31,17 +32,15 @@ class Delboy {
   }
 
   async postAddDelboy(req, res) {
-    let {
-        delname,delphone,delpassword
-     } = req.body;
-    if (
-        !delname | !delphone | !delpassword
-    ) {
+    let { delname, delphone, delpassword } = req.body;
+    if (!delname | !delphone | !delpassword) {
       return res.json({ message: "All filled must be required" });
     } else {
       try {
         let newDelboy = new delboyModel({
-          delname,delphone,delpassword
+          delname,
+          delphone,
+          delpassword,
         });
         let save = await newDelboy.save();
         if (save) {
@@ -54,18 +53,21 @@ class Delboy {
   }
 
   async postEditDelboy(req, res) {
-    let { uId, delname, delphone,delpassword } = req.body;
+    let { uId, delname, delphone, delpassword } = req.body;
     console.log(req.body);
 
     if (!uId || !delname || !delphone || !delpassword) {
       return res.json({ message: "All filled must be required" });
     } else {
-      let currentDelboy = delboyModel.findByIdAndUpdate({ _id:uId}, {
-        delname: delname,
-        delphone: delphone,
-        delpassword:delpassword,
-        updatedAt: Date.now(),
-      });
+      let currentDelboy = delboyModel.findByIdAndUpdate(
+        { _id: uId },
+        {
+          delname: delname,
+          delphone: delphone,
+          delpassword: delpassword,
+          updatedAt: Date.now(),
+        }
+      );
       currentDelboy.exec((err, result) => {
         if (err) return err;
         return res.json({ success: "Delboy updated successfully" });
@@ -78,7 +80,7 @@ class Delboy {
     if (!uId) {
       return res.json({ message: "All filled must be required" });
     } else {
-      let currentDelboy = delboyModel.findByIdAndDelete({_id:uId});
+      let currentDelboy = delboyModel.findByIdAndDelete({ _id: uId });
       currentDelboy.exec((err, result) => {
         if (err) return err;
         return res.json({ success: "Delboy deleted successfully" });
@@ -116,27 +118,37 @@ class Delboy {
     }
   }
 
-
   async postEditDelboyByOrder(req, res) {
     let { _id, pOrder } = req.body;
     console.log(req.body);
 
-    let id = _id;
-   
     try {
       delboyModel.findByIdAndUpdate(
-        { _id: id },
+        { _id: _id },
         {
           $addToSet: {
-            delCurrentOrders: pOrder,
+            delCurrentOrders: { orderId: pOrder },
           },
         },
-        { upsert: true },
+        { upsert: true, new: true },
         (err) => {
           if (err) {
             console.log(err);
           } else {
-            res.json({ success: "Order edit successfully" });
+            orderModel
+              .findByIdAndUpdate(
+                { _id: pOrder },
+                { $set: { status: "Processing", assignTo: _id } },
+                { new: true }
+              )
+              .exec((err, result) => {
+                if (err) return err;
+                return res.json({
+                  success: "Order edit successfully",
+                  result: result,
+                });
+              });
+            // res.json({ success: "Order edit successfully" });
             // console.log("EDiting");
           }
         }
@@ -146,6 +158,77 @@ class Delboy {
     }
   }
 
+  async postEditDelboyBySubscriptionOrder(req, res) {
+    let { _id, pSubscription } = req.body;
+    console.log(req.body);
+
+    try {
+      delboyModel.findByIdAndUpdate(
+        { _id: _id },
+        {
+          $addToSet: {
+            delCurrentSubOrders: { orderId: pSubscription },
+          },
+        },
+        { upsert: true, new: true },
+        (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            subscriptionModel
+              .findByIdAndUpdate(
+                { _id: pSubscription },
+                { $set: { status: "Processing", assignTo: _id } },
+                { new: true }
+              )
+              .exec((err, result) => {
+                if (err) return err;
+                return res.json({
+                  success: "Subscription edit successfully",
+                  result: result,
+                });
+              });
+            // res.json({ success: "Order edit successfully" });
+            // console.log("EDiting");
+          }
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async postUpdateCredit(req, res) {
+    let { _id, credit } = req.body;
+    console.log(req.body);
+
+    try {
+      let subscription = await subscriptionModel.findById({ _id: _id });
+      if (subscription) {
+        let currCredits = subscription.credits;
+
+        subscriptionModel.findByIdAndUpdate(
+          { _id: _id },
+          {
+            $set: {
+              credits: currCredits - credit,
+            },
+          },
+          { new: true },
+          (err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.json({ success: "Credit updated" });
+              // console.log("EDiting");
+            }
+          }
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
 
 const ordersController = new Delboy();

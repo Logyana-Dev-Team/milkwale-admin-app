@@ -5,8 +5,9 @@ class Order {
     try {
       let Orders = await orderModel
         .find({})
-        .populate("allProduct.id", "pName pImages pPrice")
-        .populate("user", "name email")
+        .populate("allProduct.productId", "pName pImages pPrice")
+        .populate("user", "name phoneNumber")
+        .populate("assignTo","delname")
         .sort({ updatedAt: -1 });
       if (Orders) {
         return res.json({ Orders });
@@ -17,6 +18,7 @@ class Order {
   }
 
   async getOrderByUser(req, res) {
+    // console.log(req.body.uId);
     let { uId } = req.body;
     if (!uId) {
       return res.json({ message: "All filled must be required" });
@@ -24,8 +26,8 @@ class Order {
       try {
         let Order = await orderModel
           .find({ user: uId })
-          .populate("allProduct.id", "pName pImages pPrice")
-          .populate("user", "name email")
+          .populate("allProduct.productId", "pName pPrice ")
+          .populate("user", "name phoneNumber")
           .sort({ _id: -1 });
         if (Order) {
           return res.json({ Order });
@@ -37,28 +39,29 @@ class Order {
   }
 
   async postCreateOrder(req, res) {
-    let { allProduct, user, amount, transactionId, address, phone,status,assignTo} = req.body;
-    if (
-      !allProduct ||
-      !user ||
-      !amount ||
-      !transactionId ||
-      !address ||
-      !phone || 
-      !assignTo
-    ) {
+    let { allProduct, user, amount, address } = req.body;
+    // console.log(req.body);
+    // console.log(allProduct);
+    if (!allProduct || !user || !amount || !address) {
       return res.json({ message: "All filled must be required" });
     } else {
       try {
+        let orderArray = [];
+        for (let i = 0; i < allProduct.length; i++) {
+          orderArray.push({
+            productId: allProduct[i].product._id,
+            quantity: allProduct[i].quantity,
+            unit:allProduct[i].unit,
+            value:allProduct[i].value,
+          });
+        }
+        console.log(orderArray)
+
         let newOrder = new orderModel({
-          allProduct,
+          allProduct: orderArray,
           user,
           amount,
-          transactionId,
           address,
-          phone,
-          assignTo,
-          status
         });
         let save = await newOrder.save();
         if (save) {
@@ -71,18 +74,24 @@ class Order {
   }
 
   async postUpdateOrder(req, res) {
-    let { oId, status,assignTo } = req.body;
+    let { oId, status, assignTo } = req.body;
     // console.log(req.body);
     if (!oId || !status || !assignTo) {
       return res.json({ message: "All filled must be required" });
     } else {
-      await orderModel.findByIdAndUpdate({_id:oId}, {
-        status: status,
-        assignTo: assignTo
-      },{new:true}).exec((err, result) => {
-        if (err) return err;
-        return res.json({ success: "Order updated successfully" });
-      });
+      await orderModel
+        .findByIdAndUpdate(
+          { _id: oId },
+          {
+            status: status,
+            assignTo: assignTo,
+          },
+          { new: true }
+        )
+        .exec((err, result) => {
+          if (err) return err;
+          return res.json({ success: "Order updated successfully" });
+        });
     }
   }
 

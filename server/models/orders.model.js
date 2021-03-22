@@ -4,8 +4,10 @@ const orderSchema = new mongoose.Schema(
   {
     allProduct: [
       {
-        id: { type: mongoose.Schema.Types.ObjectId, ref: "products" },
+        productId: { type: mongoose.Schema.Types.ObjectId, ref: "products" },
         quantity: Number,
+        unit: String,
+        value: String,
       },
     ],
     user: {
@@ -17,21 +19,21 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    transactionId: {
-      type: String,
-      required: true,
-    },
+    // transactionId: {
+    //   type: String,
+    //   required: true,
+    // },
     address: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "userAddress.address",
     },
-    phone: {
-      type: Number,
-      required: true,
-    },
+    // phone: {
+    //   type: Number,
+    //   required: true,
+    // },
     assignTo: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"delboy",
       default: "NA",
     },
 

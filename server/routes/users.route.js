@@ -9,6 +9,10 @@ router.post("/add-user", usersController.postAddUser);
 router.post("/edit-user", usersController.postEditUser);
 router.post("/delete-user", usersController.getDeleteUser);
 
+router.post("/add-to-wishlist", usersController.addToWishlist);
+router.post("/delete-from-wishlist", usersController.deleteFromWishlist);
+
+
 router.post("/change-password", usersController.changePassword);
 
 module.exports = router;

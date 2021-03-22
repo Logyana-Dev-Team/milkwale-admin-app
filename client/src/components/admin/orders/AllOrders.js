@@ -45,8 +45,10 @@ const AllCategory = (props) => {
         <table className="table-auto border w-full my-2">
           <thead>
             <tr>
-              <th className="px-4 py-2 border">OrderId</th>
+              <th className="px-4 py-2 border">Sr No.</th>
               <th className="px-4 py-2 border">Customer</th>
+
+              <th className="px-4 py-2 border">Order Details</th>
 
               <th className="px-4 py-2 border">Status</th>
               {/* <th className="px-4 py-2 border">Assigned</th> */}
@@ -70,6 +72,7 @@ const AllCategory = (props) => {
                   <CategoryTable
                     key={i}
                     order={item}
+                    srNo={i}
                     // editOrder={(oId, type, status,assignTo) =>
                     //   editOrderReq(oId, type, status, dispatch,assignTo)
                     // }
@@ -97,7 +100,7 @@ const AllCategory = (props) => {
 };
 
 /* Single Category Component */
-const CategoryTable = ({ order }) => {
+const CategoryTable = ({ order, srNo }) => {
   const { dispatch } = useContext(OrderContext);
   // console.log(order);
 
@@ -157,14 +160,14 @@ const CategoryTable = ({ order }) => {
     }
   };
 
-  const assignOrder =(datasend)=>{
+  const assignOrder = (datasend) => {
     if (datasend.assignTo !== "NA") {
       // console.log(datasend);
-      let data ={
+      let data = {
         oId: order._id,
         status: "Processing",
         assignTo: datasend.assignTo,
-      }
+      };
       // console.log(data);
       Axios.post(`${apiURL}/api/order/update-order`, data)
         .then((res) => {
@@ -178,49 +181,58 @@ const CategoryTable = ({ order }) => {
     } else {
       console.log("Errorr");
     }
-  }
+  };
 
-  const DeleteDeliveryBoy=(id,status)=>{
-    let data={
+  const DeleteDeliveryBoy = (id, status) => {
+    let data = {
       oId: id,
-    status: "Not processed",
-    assignTo: "NA",
-    }
+      status: "Not processed",
+      assignTo: "NA",
+    };
     Axios.post(`${apiURL}/api/order/update-order`, data)
-        .then((res) => {
-          // console.log(res.data);
-          // console.log("working");
-          window.location.reload();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  }
+      .then((res) => {
+        // console.log(res.data);
+        // console.log("working");
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <Fragment>
       <tr className="border-b">
+        {/* <td className="hover:bg-gray-200 p-2 text-center">
+          ID{order._id.slice(-7).toUpperCase() || ""}
+        </td> */}
+        <td className="hover:bg-gray-200 p-2 text-center">{srNo + 1}</td>
+        <td className="hover:bg-gray-200 p-2 text-center">
+          {order.user.name || ""}
+        </td>
         <td className="w-48 hover:bg-gray-200 p-2 flex flex-col space-y-1">
           {order.allProduct.map((product, index) => {
             return (
               <>
                 <div key={index}></div>
-                {/*    <span className="block flex items-center space-x-2" key={i}>
-                <img
+                <span className="block flex items-center space-x-2" key={index}>
+                  {/* <img
                   className="w-8 h-8 object-cover object-center"
-                  src={`${apiURL}/uploads/products/${product.id.pImages[0]}`}
+                  src={`${apiURL}/uploads/products/${product.productId.pImages[0]}`}
                   alt="productImage"
-                /> 
-                <span>{product.id.pName}</span>
-                <span>x {product.quantitiy}</span>
-             
-              </span>   */}
+                />  */}
+                  <span>
+                    {product.productId.pName}
+                    <span>
+                      ({product.value}
+                      {product.unit})
+                    </span>
+                  </span>
+                  <span>x {product.quantity}</span>
+                </span>
               </>
             );
           })}
-        </td>
-        <td className="hover:bg-gray-200 p-2 text-center">
-          {order.user.name || ""}
         </td>
 
         <td className="hover:bg-gray-200 p-2 text-center cursor-default">
@@ -253,7 +265,7 @@ const CategoryTable = ({ order }) => {
 
         {/* <td className="text-center">{showAssignee}</td> */}
         <td className="text-center">
-          {order.assignTo !=="NA" ? (
+          {order.assignTo !== "NA" ? (
             <>
               <div>{order.assignTo}</div>
               <button
@@ -262,7 +274,7 @@ const CategoryTable = ({ order }) => {
                 onClick={() => {
                   // editOrder(datasend)
                   setAdded(!added);
-                  DeleteDeliveryBoy(order._id,order.status);
+                  DeleteDeliveryBoy(order._id, order.status);
                   setDatasend({ assignTo: "NA" });
                 }}
                 style={{
