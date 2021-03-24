@@ -13,6 +13,7 @@ router.post("/change-password", delboyController.changePassword);
 router.post("/edit-delboy-by-order", delboyController.postEditDelboyByOrder);
 router.post("/edit-delboy-by-subscription-order", delboyController.postEditDelboyBySubscriptionOrder);
 router.post("/update-credit", delboyController.postUpdateCredit);
+router.post("/update-order", delboyController.postUpdateOrder);
 
 
 

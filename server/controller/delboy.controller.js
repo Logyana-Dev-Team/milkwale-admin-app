@@ -9,7 +9,7 @@ class Delboy {
       let Delboy = await delboyModel
         .find({})
         .populate("delCurrentOrders.orderId")
-        .populate("delCurrentSubOrders.orderId")
+        .populate("delCurrentSubOrders.orderId");
       if (Delboy) {
         return res.json({ Delboy });
       }
@@ -24,7 +24,33 @@ class Delboy {
       return res.json({ error: "All filled must be required" });
     } else {
       try {
-        let Delboy = await delboyModel.findById({ _id: uId });
+        let Delboy = await delboyModel
+          .findById({ _id: uId })
+          .populate("delCurrentOrders.orderId")
+          .populate("delCurrentSubOrders.orderId")
+          .populate({
+            path: "delCurrentOrders",
+            populate: {
+              path: "orderId",
+              populate: {
+                path: "allProduct",
+                  populate: { path: "productId" },
+                },
+              },
+            
+          })
+          .populate({
+            path: "delCurrentSubOrders",
+            populate: {
+              path: "orderId",
+              populate: {
+                path: "subscriptionProduct",
+                  populate: { path: "subId" },
+                },
+              },
+            
+          });
+
         if (Delboy) {
           return res.json({ Delboy });
         }
@@ -311,20 +337,18 @@ class Delboy {
     }
   }
 
-  async postUpdateCredit(req, res) {
-    let { _id, credit } = req.body;
+  async postUpdateOrder(req, res) {
+    let { _id,action } = req.body;
     console.log(req.body);
 
     try {
-      let subscription = await subscriptionModel.findById({ _id: _id });
-      if (subscription) {
-        let currCredits = subscription.credits;
-
-        subscriptionModel.findByIdAndUpdate(
+      let order = await orderModel.findById({ _id: _id });
+      if (order) {
+        orderModel.findByIdAndUpdate(
           { _id: _id },
           {
             $set: {
-              credits: currCredits - credit,
+              status: action,
             },
           },
           { new: true },
@@ -332,7 +356,7 @@ class Delboy {
             if (err) {
               console.log(err);
             } else {
-              res.json({ success: "Credit updated" });
+              res.json({ success: "Order Delivered " });
               // console.log("EDiting");
             }
           }
@@ -340,6 +364,65 @@ class Delboy {
       }
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  async postUpdateCredit(req, res) {
+    let { _id, credit, action } = req.body;
+    console.log(req.body);
+    if (action === "Delivered") {
+      try {
+        let subscription = await subscriptionModel.findById({ _id: _id });
+        if (subscription) {
+          let currCredits = subscription.credits;
+
+          subscriptionModel.findByIdAndUpdate(
+            { _id: _id },
+            {
+              $set: {
+                credits: currCredits - credit,
+                status: "Delivered",
+              },
+            },
+            { new: true },
+            (err) => {
+              if (err) {
+                console.log(err);
+              } else {
+                res.json({ success: "Delivered Subscription" });
+                // console.log("EDiting");
+              }
+            }
+          );
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      try {
+        let subscription = await subscriptionModel.findById({ _id: _id });
+        if (subscription) {
+          subscriptionModel.findByIdAndUpdate(
+            { _id: _id },
+            {
+              $set: {
+                status: "Cancelled",
+              },
+            },
+            { new: true },
+            (err) => {
+              if (err) {
+                console.log(err);
+              } else {
+                res.json({ success: "Cancelled Subscription" });
+                // console.log("EDiting");
+              }
+            }
+          );
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 }

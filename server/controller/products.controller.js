@@ -227,7 +227,7 @@ class Product {
     } else {
       try {
         let singleProduct = await productModel
-          .findById(pId)
+          .findById({_id:pId})
           .populate("pCategory", "cName")
         if (singleProduct) {
           return res.json({ Product: singleProduct });
