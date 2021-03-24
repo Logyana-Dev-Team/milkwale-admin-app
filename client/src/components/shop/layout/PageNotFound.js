@@ -1,34 +1,121 @@
-import React from "react";
-import Layout from "./index";
+import React, { Fragment, useState, useContext } from "react";
+import { loginReq } from "../auth/fetchApi";
+import { LayoutContext } from "../index";
 
-const PageNotFoundComponent = (props) => {
-  return (
-    <div className="flex flex-col items-center justify-center my-32">
-      <span>
-        <svg
-          className="w-32 h-32 text-gray-700"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      </span>
-      <span className="text-center text-gray-700 text-4xl font-bold tracking-widest">
-        404 not found
-      </span>
-    </div>
-  );
-};
+
 
 const PageNotFound = (props) => {
-  return <Layout children={<PageNotFoundComponent />} />;
+
+  const { data: layoutData, dispatch: layoutDispatch } = useContext(
+    LayoutContext
+  );
+
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+    error: false,
+    loading: true,
+  });
+
+  const alert = (msg) => <div className="text-xs text-red-500">{msg}</div>;
+
+  const formSubmit = async () => {
+    setData({ ...data, loading: true });
+    try {
+      let responseData = await loginReq({
+        email: data.email,
+        password: data.password,
+      });
+      if (responseData.error) {
+        setData({
+          ...data,
+          loading: false,
+          error: responseData.error,
+          password: "",
+        });
+      } else if (responseData.token) {
+        setData({ email: "", password: "", loading: false, error: false });
+        localStorage.setItem("jwt", JSON.stringify(responseData));
+        window.location.href = "/admin/dashboard";
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return (
+    <div className="mx-10 " style={{margin:"100px 300px 100px 300px"}}>
+        <div className="text-center text-4xl mb-6 text-green-400  font-weight-bolder">MILKWALE</div>
+      <div className="text-center text-2xl mb-6">Login</div>
+      {layoutData.loginSignupError ? (
+        <div className="bg-red-200 py-2 px-4 rounded">
+          You need to login for checkout. Haven't accont? Create new one.
+        </div>
+      ) : (
+        ""
+      )}
+      <form className="space-y-4">
+        <div className="flex flex-col">
+          <label htmlFor="name">
+            Username or email address
+            <span className="text-sm text-gray-600 ml-1">*</span>
+          </label>
+          <input
+            onChange={(e) => {
+              setData({ ...data, email: e.target.value, error: false });
+              layoutDispatch({ type: "loginSignupError", payload: false });
+            }}
+            value={data.email}
+            type="text"
+            id="name"
+            className={`${
+              !data.error ? "" : "border-red-500"
+            } px-4 py-2 focus:outline-none border`}
+          />
+          {!data.error ? "" : alert(data.error)}
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="password">
+            Password<span className="text-sm text-gray-600 ml-1">*</span>
+          </label>
+          <input
+            onChange={(e) => {
+              setData({ ...data, password: e.target.value, error: false });
+              layoutDispatch({ type: "loginSignupError", payload: false });
+            }}
+            value={data.password}
+            type="password"
+            id="password"
+            className={`${
+              !data.error ? "" : "border-red-500"
+            } px-4 py-2 focus:outline-none border`}
+          />
+          {!data.error ? "" : alert(data.error)}
+        </div>
+        <div className="flex flex-col space-y-2 md:flex-row md:justify-between md:items-center">
+          {/* <div>
+            <input
+              type="checkbox"
+              id="rememberMe"
+              className="px-4 py-2 focus:outline-none border mr-1"
+            />
+            <label htmlFor="rememberMe">
+              Remember me<span className="text-sm text-gray-600">*</span>
+            </label>
+          </div>
+          <a className="block text-gray-600" href="/">
+            Lost your password?
+          </a> */}
+        </div>
+        <div
+          onClick={(e) => formSubmit()}
+          style={{ background: "#303031" }}
+          className="font-medium px-4 py-2 text-white text-center cursor-pointer"
+        >
+          Login
+        </div>
+      </form>
+    </div>
+  )
 };
 
 export default PageNotFound;

@@ -6,9 +6,12 @@ const subscriptionModel = require("../models/subscription.model");
 class Delboy {
   async getAllDelboy(req, res) {
     try {
-      let Delboys = await delboyModel.find({}).sort({ updatedAt: -1 });
-      if (Delboys) {
-        return res.json({ Delboys });
+      let Delboy = await delboyModel
+        .find({})
+        .populate("delCurrentOrders.orderId")
+        .populate("delCurrentSubOrders.orderId")
+      if (Delboy) {
+        return res.json({ Delboy });
       }
     } catch (err) {
       console.log(err);
@@ -119,82 +122,192 @@ class Delboy {
   }
 
   async postEditDelboyByOrder(req, res) {
-    let { _id, pOrder } = req.body;
-    console.log(req.body);
+    let { _id, pOrder, status, assignAction } = req.body;
+    let delID;
 
-    try {
-      delboyModel.findByIdAndUpdate(
-        { _id: _id },
-        {
-          $addToSet: {
-            delCurrentOrders: { orderId: pOrder },
+    if (assignAction == "false") {
+      delID = _id._id;
+    } else {
+      delID = _id;
+    }
+    console.log(req.body);
+    if (assignAction === "false") {
+      try {
+        delboyModel.findByIdAndUpdate(
+          { _id: delID },
+          {
+            $pull: {
+              delCurrentOrders: { orderId: pOrder },
+            },
           },
-        },
-        { upsert: true, new: true },
-        (err) => {
-          if (err) {
-            console.log(err);
-          } else {
-            orderModel
-              .findByIdAndUpdate(
-                { _id: pOrder },
-                { $set: { status: "Processing", assignTo: _id } },
-                { new: true }
-              )
-              .exec((err, result) => {
-                if (err) return err;
-                return res.json({
-                  success: "Order edit successfully",
-                  result: result,
+          { upsert: true, new: true },
+          (err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              orderModel
+                .findByIdAndUpdate(
+                  { _id: pOrder },
+                  {
+                    $set: {
+                      status: status,
+                      assignTo: null,
+                      assignAction: assignAction,
+                    },
+                  },
+                  { new: true }
+                )
+                .exec((err, result) => {
+                  if (err) return err;
+                  return res.json({
+                    success: "Order edit successfully",
+                    result: result,
+                  });
                 });
-              });
-            // res.json({ success: "Order edit successfully" });
-            // console.log("EDiting");
+              // res.json({ success: "Order edit successfully" });
+              // console.log("EDiting");
+            }
           }
-        }
-      );
-    } catch (err) {
-      console.log(err);
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      try {
+        delboyModel.findByIdAndUpdate(
+          { _id: delID },
+          {
+            $addToSet: {
+              delCurrentOrders: { orderId: pOrder },
+            },
+          },
+          { upsert: true, new: true },
+          (err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              orderModel
+                .findByIdAndUpdate(
+                  { _id: pOrder },
+                  {
+                    $set: {
+                      status: status,
+                      assignTo: delID,
+                      assignAction: assignAction,
+                    },
+                  },
+                  { new: true }
+                )
+                .exec((err, result) => {
+                  if (err) return err;
+                  return res.json({
+                    success: "Order edit successfully",
+                    result: result,
+                  });
+                });
+              // res.json({ success: "Order edit successfully" });
+              // console.log("EDiting");
+            }
+          }
+        );
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 
   async postEditDelboyBySubscriptionOrder(req, res) {
-    let { _id, pSubscription } = req.body;
-    console.log(req.body);
+    let { _id, pSubscription, status, assignAction } = req.body;
+    let delID;
 
-    try {
-      delboyModel.findByIdAndUpdate(
-        { _id: _id },
-        {
-          $addToSet: {
-            delCurrentSubOrders: { orderId: pSubscription },
+    if (assignAction == "false") {
+      delID = _id._id;
+    } else {
+      delID = _id;
+    }
+    console.log(req.body);
+    if (assignAction === "false") {
+      try {
+        delboyModel.findByIdAndUpdate(
+          { _id: delID },
+          {
+            $pull: {
+              delCurrentSubOrders: { orderId: pSubscription },
+            },
           },
-        },
-        { upsert: true, new: true },
-        (err) => {
-          if (err) {
-            console.log(err);
-          } else {
-            subscriptionModel
-              .findByIdAndUpdate(
-                { _id: pSubscription },
-                { $set: { status: "Processing", assignTo: _id } },
-                { new: true }
-              )
-              .exec((err, result) => {
-                if (err) return err;
-                return res.json({
-                  success: "Subscription edit successfully",
-                  result: result,
+          { upsert: true, new: true },
+          (err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              subscriptionModel
+                .findByIdAndUpdate(
+                  { _id: pSubscription },
+                  {
+                    $set: {
+                      status: status,
+                      assignTo: null,
+                      assignAction: assignAction,
+                    },
+                  },
+                  { new: true }
+                )
+                .exec((err, result) => {
+                  if (err) return err;
+                  return res.json({
+                    success: "Subscription edit successfully",
+                    result: result,
+                  });
                 });
-              });
-            // res.json({ success: "Order edit successfully" });
-            // console.log("EDiting");
+              // res.json({ success: "Order edit successfully" });
+              // console.log("EDiting");
+            }
           }
-        }
-      );
-    } catch (err) {
-      console.log(err);
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      try {
+        delboyModel.findByIdAndUpdate(
+          { _id: delID },
+          {
+            $addToSet: {
+              delCurrentSubOrders: { orderId: pSubscription },
+            },
+          },
+          { upsert: true, new: true },
+          (err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              subscriptionModel
+                .findByIdAndUpdate(
+                  { _id: pSubscription },
+                  {
+                    $set: {
+                      status: status,
+                      assignTo: delID,
+                      assignAction: assignAction,
+                    },
+                  },
+                  { new: true }
+                )
+                .exec((err, result) => {
+                  if (err) return err;
+                  return res.json({
+                    success: "Subscription edit successfully",
+                    result: result,
+                  });
+                });
+              // res.json({ success: "Order edit successfully" });
+              // console.log("EDiting");
+            }
+          }
+        );
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 

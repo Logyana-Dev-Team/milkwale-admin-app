@@ -109,7 +109,7 @@ const CategoryTable = ({ order, srNo }) => {
   const [datasend, setDatasend] = useState({
     oId: order._id,
     status: order.status,
-    assignTo: order.assignTo,
+    _id: order.assignTo,
   });
   const [showAssignee, setShowAssignee] = useState("");
   const getAllDelboy = async () => {
@@ -123,9 +123,9 @@ const CategoryTable = ({ order, srNo }) => {
 
   const fetchDelboys = async () => {
     let responseData = await getAllDelboy();
-    //  console.log(responseData.Delboys)
+    //  console.log(responseData.Delboy)
 
-    setDelboy(responseData.Delboys);
+    setDelboy(responseData.Delboy);
   };
 
   const getSelected = (id) => {
@@ -161,17 +161,18 @@ const CategoryTable = ({ order, srNo }) => {
   };
 
   const assignOrder = (datasend) => {
-    if (datasend.assignTo !== "NA") {
+    if (datasend && order.assignAction === "false") {
       // console.log(datasend);
       let data = {
-        oId: order._id,
+        assignAction:"true",
+        pOrder: order._id,
         status: "Processing",
-        assignTo: datasend.assignTo,
+        _id: datasend.assignTo,
       };
       // console.log(data);
-      Axios.post(`${apiURL}/api/order/update-order`, data)
+      Axios.post(`${apiURL}/api/delboy/edit-delboy-by-order`, data)
         .then((res) => {
-          // console.log(res.data);
+          console.log(res.data);
           // console.log("working");
           window.location.reload();
         })
@@ -183,13 +184,14 @@ const CategoryTable = ({ order, srNo }) => {
     }
   };
 
-  const DeleteDeliveryBoy = (id, status) => {
+  const DeleteDeliveryBoy = (id,delboyId) => {
     let data = {
-      oId: id,
+      assignAction:"false",
+      pOrder: id,
+      _id:delboyId,
       status: "Not processed",
-      assignTo: "NA",
     };
-    Axios.post(`${apiURL}/api/order/update-order`, data)
+    Axios.post(`${apiURL}/api/delboy/edit-delboy-by-order`, data)
       .then((res) => {
         // console.log(res.data);
         // console.log("working");
@@ -265,17 +267,17 @@ const CategoryTable = ({ order, srNo }) => {
 
         {/* <td className="text-center">{showAssignee}</td> */}
         <td className="text-center">
-          {order.assignTo !== "NA" ? (
+          {order.assignAction === "true" ? (
             <>
-              <div>{order.assignTo}</div>
+              <div>{order.assignTo.delname}</div>
               <button
                 type="button"
                 className="focus:outline-none"
                 onClick={() => {
                   // editOrder(datasend)
-                  setAdded(!added);
-                  DeleteDeliveryBoy(order._id, order.status);
-                  setDatasend({ assignTo: "NA" });
+                  // setAdded(!added);
+                  DeleteDeliveryBoy(order._id,datasend._id);
+                  setDatasend({ assignTo: null });
                 }}
                 style={{
                   backgroundColor: "red",
@@ -301,7 +303,7 @@ const CategoryTable = ({ order, srNo }) => {
                 {delboy.length > 0 &&
                   delboy.map((item, index) => {
                     return (
-                      <option key={index} name="status" value={item.delname}>
+                      <option key={index} name="status" value={item._id}>
                         {item.delname}
                       </option>
                     );

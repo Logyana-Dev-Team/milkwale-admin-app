@@ -39,6 +39,7 @@ class Order {
   }
 
   async postCreateOrder(req, res) {
+    console.log(req.body);
     let { allProduct, user, amount, address } = req.body;
     // console.log(req.body);
     // console.log(allProduct);
@@ -64,6 +65,7 @@ class Order {
           address,
         });
         let save = await newOrder.save();
+        console.log(save)
         if (save) {
           return res.json({ success: "Order created successfully" });
         }

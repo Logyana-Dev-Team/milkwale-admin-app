@@ -11,8 +11,6 @@ const subscriptionSchema = new mongoose.Schema(
       ref: "users",
       required: true,
     },
-
-   
     address: {
       type: ObjectId, ref: "useraddress.address"
     },
@@ -34,8 +32,11 @@ const subscriptionSchema = new mongoose.Schema(
     },
     assignTo: {
       type: mongoose.Schema.Types.ObjectId,
-      ref:"delboy",
-      default: "NA",
+      ref: "delboy",
+    },
+    assignAction: {
+      type: String,
+      default: "false",
     },
     status: {
       type: String,

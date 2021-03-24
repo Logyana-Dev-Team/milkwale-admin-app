@@ -30,7 +30,7 @@ const SellTable = () => {
   return (
     <Fragment>
       <div className="col-span-1 overflow-auto bg-white shadow-lg p-4">
-        <div className="text-2xl font-semibold mb-6 text-center">
+        {/* <div className="text-2xl font-semibold mb-6 text-center">
           Today's Orders{" "}
           {data.totalOrders.Orders !== undefined ? ordersList().length : 0}
         </div>
@@ -74,7 +74,7 @@ const SellTable = () => {
           >
             View All
           </span>
-        </div>
+        </div> */}
       </div>
     </Fragment>
   );

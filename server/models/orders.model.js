@@ -33,8 +33,11 @@ const orderSchema = new mongoose.Schema(
     // },
     assignTo: {
       type: mongoose.Schema.Types.ObjectId,
-      ref:"delboy",
-      default: "NA",
+      ref: "delboy",
+    },
+    assignAction: {
+      type: String,
+      default: "false",
     },
 
     status: {

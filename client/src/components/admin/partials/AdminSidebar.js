@@ -16,7 +16,7 @@ const AdminSidebar = (props) => {
           onClick={(e) => history.push("/admin/dashboard")}
           className={`${
             location.pathname === "/admin/dashboard"
-              ? "border-r-4 border-gray-800 bg-gray-100"
+              ? "border-r-4 border-green-700 bg-green-500 text-white"
               : ""
           } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
         >
@@ -43,9 +43,9 @@ const AdminSidebar = (props) => {
           onClick={(e) => history.push("/admin/dashboard/categories")}
           className={`${
             location.pathname === "/admin/dashboard/categories"
-              ? "border-r-4 border-gray-800 bg-gray-100"
+              ? "border-r-4 border-green-700 bg-green-500 text-white"
               : ""
-          } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
+          } hover:bg-green-400  cursor-pointer flex flex-col items-center justify-center py-2`}
         >
           <span>
             <svg
@@ -70,7 +70,7 @@ const AdminSidebar = (props) => {
           onClick={(e) => history.push("/admin/dashboard/products")}
           className={`${
             location.pathname === "/admin/dashboard/products"
-              ? "border-r-4 border-white bg-gray-100"
+              ? "border-r-4 border-green-700 bg-green-500 text-white"
               : ""
           } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
         >
@@ -97,7 +97,7 @@ const AdminSidebar = (props) => {
           onClick={(e) => history.push("/admin/dashboard/orders")}
           className={`${
             location.pathname === "/admin/dashboard/orders"
-              ? "border-r-4 border-white bg-gray-100"
+              ? "border-r-4 border-green-700 bg-green-500 text-white"
               : ""
           } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
         >
@@ -124,7 +124,7 @@ const AdminSidebar = (props) => {
           onClick={(e) => history.push("/admin/dashboard/subscriptions")}
           className={`${
             location.pathname === "/admin/dashboard/subscriptions"
-              ? "border-r-4 border-white bg-gray-100"
+              ? "border-r-4 border-green-700 bg-green-500 text-white"
               : ""
           } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
         >
@@ -150,8 +150,8 @@ const AdminSidebar = (props) => {
         <div
           onClick={(e) => history.push("/admin/dashboard/subpacks")}
           className={`${
-            location.pathname === "/admin/dashboard/subscriptions"
-              ? "border-r-4 border-white bg-gray-100"
+            location.pathname === "/admin/dashboard/subpacks"
+              ? "border-r-4 border-green-700 bg-green-500 text-white"
               : ""
           } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
         >
@@ -179,7 +179,7 @@ const AdminSidebar = (props) => {
           onClick={(e) => history.push("/admin/dashboard/deliveryboys")}
           className={`${
             location.pathname === "/admin/dashboard/deliveryboys"
-              ? "border-r-4 border-white bg-gray-100"
+              ? "border-r-4 border-green-700 bg-green-500 text-white"
               : ""
           } hover:bg-green-400 cursor-pointer flex flex-col items-center justify-center py-2`}
         >

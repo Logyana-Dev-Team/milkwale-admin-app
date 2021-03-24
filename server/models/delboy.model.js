@@ -23,7 +23,7 @@ const delboySchema = new mongoose.Schema(
     ],
     delCurrentSubOrders: [
       {
-        orderId: { type: ObjectId, ref:'orders' },
+        orderId: { type: ObjectId, ref:'subscription' },
         status: String,
       }
     ],

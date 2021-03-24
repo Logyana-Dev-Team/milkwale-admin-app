@@ -1,8 +1,13 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import moment from "moment";
 
 import { SubscriptionContext } from "./index";
-import { fetchData, editSubscriptionReq, deleteSubscriptionReq } from "./Actions";
+import {
+  fetchData,
+  editSubscriptionReq,
+  deleteSubscriptionReq,
+} from "./Actions";
+import Axios from "axios";
 
 const apiURL = process.env.REACT_APP_API_URL;
 
@@ -44,9 +49,10 @@ const AllCategory = (props) => {
               {/* <th className="px-4 py-2 border">Subscription Id</th> */}
               <th className="px-4 py-2 border">Customer</th>
 
+              <th className="px-4 py-2 border">Product</th>
               <th className="px-4 py-2 border">Status</th>
 
-              {/* <th className="px-4 py-2 border">Address</th> */}
+              <th className="px-4 py-2 border">Assign To</th>
               {/* <th className="px-4 py-2 border">Transaction Id</th> */}
               {/* <th className="px-4 py-2 border">Email</th>
               <th className="px-4 py-2 border">Phone</th>
@@ -94,6 +100,74 @@ const AllCategory = (props) => {
 /* Single Category Component */
 const CategoryTable = ({ subscription, editSubscription }) => {
   const { dispatch } = useContext(SubscriptionContext);
+  const [delboy, setDelboy] = useState([]);
+  const [datasend, setDatasend] = useState({
+    oId: subscription._id,
+    status: subscription.status,
+    _id: subscription.assignTo,
+  });
+  const getAllDelboy = async () => {
+    try {
+      let res = await Axios.get(`${apiURL}/api/delboy/all-delboy`);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchDelboys = async () => {
+    let responseData = await getAllDelboy();
+    //  console.log(responseData.Delboy)
+
+    setDelboy(responseData.Delboy);
+  };
+
+  useEffect(() => {
+    fetchDelboys();
+    // getSelected(datasend.assignTo);
+  }, [datasend]);
+
+  const assignOrder = (datasend) => {
+    if (datasend && subscription.assignAction === "false") {
+      // console.log(datasend);
+      let data = {
+        assignAction: "true",
+        pSubscription: subscription._id,
+        status: "Processing",
+        _id: datasend.assignTo,
+      };
+      console.log(data);
+      Axios.post(`${apiURL}/api/delboy/edit-delboy-by-subscription-order`, data)
+        .then((res) => {
+          console.log(res.data);
+          // console.log("working");
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("Errorr");
+    }
+  };
+
+  const DeleteDeliveryBoy = (id, delboyId) => {
+    let data = {
+      assignAction: "false",
+      pSubscription: id,
+      _id: delboyId,
+      status: "Not processed",
+    };
+    Axios.post(`${apiURL}/api/delboy/edit-delboy-by-subscription-order`, data)
+      .then((res) => {
+        // console.log(res.data);
+        // console.log("working");
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <Fragment>
@@ -114,12 +188,18 @@ const CategoryTable = ({ subscription, editSubscription }) => {
           })} 
         </td>*/}
         {/* <td className="hover:bg-gray-200 p-2 text-center">ID{subscription._id.slice(-5).toUpperCase()}</td> */}
-        <td className="hover:bg-gray-200 p-2 text-center">{subscription.user.name}</td>
+        <td className="hover:bg-gray-200 p-2 text-center">
+          {subscription.user.name}
+        </td>
+        <td className="hover:bg-gray-200 p-2 text-center">
+          {subscription.subscriptionProduct.subId.pName}
+        </td>
 
         <td className="hover:bg-gray-200 p-2 text-center cursor-default">
           {subscription.status === "Not processed" && (
             <span className="block text-red-600 rounded-full text-center text-xs px-2 font-semibold">
-              {subscription.status}{console.log(subscription)}
+              {subscription.status}
+              {console.log(subscription)}
             </span>
           )}
           {subscription.status === "Processing" && (
@@ -155,8 +235,80 @@ const CategoryTable = ({ subscription, editSubscription }) => {
         </td> */}
         {/* <td className="hover:bg-gray-200 p-2 text-center">{subscription.phone}</td> */}
         {/* <td className="hover:bg-gray-200 p-2 text-center">{subscription.address}</td> */}
-        <td className="hover:bg-gray-200 p-2 text-center">{subscription.morningTime}</td>
-        <td className="hover:bg-gray-200 p-2 text-center">{subscription.eveningTime}</td>
+        <td className="text-center">
+          {subscription.assignAction === "true" ? (
+            <>
+              <div>{subscription.assignTo.delname}</div>
+              <button
+                type="button"
+                className="focus:outline-none"
+                onClick={() => {
+                  // editOrder(datasend)
+                  // setAdded(!added);
+                  DeleteDeliveryBoy(subscription._id, datasend._id);
+                  setDatasend({ assignTo: null });
+                }}
+                style={{
+                  backgroundColor: "red",
+                  color: "black",
+                  padding: "5px",
+                }}
+              >
+                Delete
+              </button>
+            </>
+          ) : (
+            <>
+              <select
+                // value={order.assignTo}
+                onChange={(e) => {
+                  // editOrder(order._id,dispatch,order.status,order.assignTo)
+                  setDatasend({ ...datasend, assignTo: e.target.value });
+                }}
+                name="variantunit"
+                className="px-1 py-1 border focus:outline-none"
+                id="variantunit"
+              >
+                {delboy.length > 0 &&
+                  delboy.map((item, index) => {
+                    return (
+                      <option key={index} name="status" value={item._id}>
+                        {item.delname}
+                      </option>
+                    );
+                  })}
+                {/* <option name="status" value="">
+                    Select unit
+                  </option>
+                  <option name="status" value="units">
+                    units
+                  </option> */}
+              </select>
+              <button
+                type="button"
+                className="focus:outline-none"
+                onClick={() => {
+                  // editOrder(datasend);
+                  assignOrder(datasend);
+                  // setAdded(!added);
+                }}
+                style={{
+                  backgroundColor: "#303031",
+                  color: "white",
+                  padding: "5px",
+                }}
+              >
+                Add
+              </button>
+            </>
+          )}
+        </td>
+        <td className="hover:bg-gray-200 p-2 text-center">
+          {subscription.morningTime}
+        </td>
+        <td className="hover:bg-gray-200 p-2 text-center">
+          {subscription.eveningTime}
+        </td>
         {/* <td className="hover:bg-gray-200 p-2 text-center">
           {moment(subscription.createdAt).format("lll")}
         </td>
@@ -165,7 +317,9 @@ const CategoryTable = ({ subscription, editSubscription }) => {
         </td> */}
         <td className="p-2 flex items-center justify-center">
           <span
-            onClick={(e) => editSubscription(subscription._id, true, subscription.status)}
+            onClick={(e) =>
+              editSubscription(subscription._id, true, subscription.status)
+            }
             className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1"
           >
             <svg
